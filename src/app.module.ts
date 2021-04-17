@@ -7,6 +7,8 @@ import { ProductsModule } from './products/products.module';
 import { PersonsModule } from './persons/persons.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PurchasesModule } from './purchases/purchases.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { PurchasesModule } from './purchases/purchases.module';
         uri: `mongodb+srv://streckapp:${process.env.DATABASE_PASSWORD}@streckapp.hluxz.mongodb.net/streckapp?retryWrites=true&w=majority`,
       }),
     }),
+    UsersModule,
+    AuthModule,
     ProductsModule,
     PersonsModule,
     PaymentsModule,
