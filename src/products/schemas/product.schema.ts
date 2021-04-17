@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsInt } from 'class-validator';
 import { Document } from 'mongoose';
 
 export type ProductDocument = Product & Document;
@@ -8,12 +9,11 @@ export class Product {
   @Prop({ required: true })
   name: string;
 
+  @IsInt()
   @Prop({ required: true })
-  @Prop()
   price: number;
 
   @Prop({ required: true })
-  @Prop()
   available: boolean;
 }
 

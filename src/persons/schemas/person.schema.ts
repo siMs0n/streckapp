@@ -9,7 +9,6 @@ export class Person {
   name: string;
 
   @Prop({ required: true })
-  @Prop()
   balance: number;
 }
 

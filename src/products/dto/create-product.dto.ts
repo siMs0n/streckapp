@@ -1,5 +1,9 @@
+import { IsInt, IsNotEmpty } from 'class-validator';
+
 export class CreateProductDto {
+  @IsNotEmpty()
   readonly name: string;
-  readonly prince: number;
+  @IsInt()
+  readonly price: number;
   readonly available: boolean;
 }
