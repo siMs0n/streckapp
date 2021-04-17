@@ -1,4 +1,5 @@
-#Streck app
+# Streck app
+
 An app built with React, NestJs and MongoDB for handling "streckning".
 
 ## Installation
