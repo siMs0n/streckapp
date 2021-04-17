@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PersonsService } from 'src/persons/persons.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { Payment, PaymentDocument } from './schemas/payment.schema';
@@ -9,15 +10,22 @@ import { Payment, PaymentDocument } from './schemas/payment.schema';
 export class PaymentsService {
   constructor(
     @InjectModel(Payment.name) private paymentModel: Model<PaymentDocument>,
+    private personsService: PersonsService,
   ) {}
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
-    const createdPayment = new this.paymentModel(createPaymentDto);
-    return createdPayment.save();
+    const person = await this.personsService.findOne(createPaymentDto.personId);
+
+    const createdPayment = new this.paymentModel(createPaymentDto).save();
+
+    const newBalance = person.balance + createPaymentDto.amount;
+    this.personsService.update(person._id, { balance: newBalance });
+
+    return createdPayment;
   }
 
   async findAll(): Promise<Payment[]> {
-    return this.paymentModel.find().exec();
+    return this.paymentModel.find().populate('personId').exec();
   }
 
   async findOne(id: string) {
