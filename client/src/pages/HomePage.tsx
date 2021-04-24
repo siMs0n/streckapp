@@ -18,17 +18,15 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
-const buttonVariants = {
-  normal: { scale: 1 },
-  success: { scale: 1.2 },
-};
 
 let loadingTimeout: NodeJS.Timeout;
 
 export default function HomePage() {
   const [showSpinner, setShowSpinner] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState<Product>();
-  const [selectedPersonId, setSelectedPersonId] = React.useState<string>();
+  const [selectedPersonId, setSelectedPersonId] = React.useState<string>(
+    localStorage.getItem('selectedPersonId') || '',
+  );
   const [quantity, setQuantity] = React.useState(1);
   const [buttonSuccess, setButtonSuccess] = React.useState(false);
   const { data: products } = useQuery('products', getProducts);
@@ -63,6 +61,7 @@ export default function HomePage() {
   ) => {
     const personId = event.target.value as string;
     setSelectedPersonId(personId);
+    localStorage.setItem('selectedPersonId', personId);
   };
 
   const onChangeSelectedProduct = (
@@ -158,8 +157,6 @@ export default function HomePage() {
               isLoading={purchaseMutation.isLoading}
               loadingText="Laddar"
               whileTap={{ scale: 0.9 }}
-              animate={buttonSuccess ? 'success' : 'normal'}
-              variants={buttonVariants}
             >
               {buttonSuccess ? 'Streckat!' : 'Strecka'}
             </MotionButton>
