@@ -119,17 +119,6 @@ export default function HomePage() {
 
   const selectedPerson = persons?.find((p) => p._id === selectedPersonId);
 
-  if (showSpinner) {
-    return (
-      <Container centerContent>
-        <Flex flexDirection="column" alignItems="center" mt={8}>
-          <Text>Hämtar data...</Text>
-          <Spinner mt={8} size="xl" />
-        </Flex>
-      </Container>
-    );
-  }
-
   const onChangePaymentAmount = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -172,6 +161,53 @@ export default function HomePage() {
     };
     paymentMutation.mutate(payment);
   };
+
+  if (showSpinner) {
+    return (
+      <Container centerContent>
+        <Flex flexDirection="column" alignItems="center" mt={8}>
+          <Text>Hämtar data...</Text>
+          <Spinner mt={8} size="xl" />
+        </Flex>
+      </Container>
+    );
+  }
+
+  if (!selectedPerson) {
+    return (
+      <Container centerContent>
+        <Flex
+          w="100%"
+          height="90vh"
+          py={2}
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+        >
+          <MotionBox
+            initial={{ opacity: 0, translateY: 40 }}
+            animate={{ opacity: 1, translateY: 0 }}
+            transition={{ duration: 0.8 }}
+            textAlign="center"
+          >
+            <Heading mb={8}>Hej!</Heading>
+            <Select
+              w={200}
+              placeholder="Välj person"
+              onChange={onChangeSelectedPerson}
+              value={selectedPersonId}
+            >
+              {persons?.map((person) => (
+                <option value={person._id} key={person._id}>
+                  {person.name}
+                </option>
+              ))}
+            </Select>
+          </MotionBox>
+        </Flex>
+      </Container>
+    );
+  }
 
   return (
     <Container centerContent maxW={600}>
@@ -231,7 +267,7 @@ export default function HomePage() {
                 </Box>
                 <Box w={300} mt={16} display="flex" justifyContent="center">
                   <MotionButton
-                    colorScheme={buttonSuccess ? 'green' : 'orange'}
+                    colorScheme={buttonSuccess ? 'green' : 'purple'}
                     disabled={!selectedProduct && !buttonSuccess}
                     w={160}
                     onClick={onPurchase}
@@ -277,7 +313,7 @@ export default function HomePage() {
                     <Text mt={8}>Tryck på bekräfta efter du har swishat</Text>
                     <Button
                       mt={4}
-                      colorScheme="orange"
+                      colorScheme="purple"
                       onClick={onConfirmPayment}
                       loading={paymentMutation.isLoading}
                       loadingText="Laddar"
@@ -298,10 +334,10 @@ export default function HomePage() {
           w="100%"
           maxWidth={600}
         >
-          <Tab w="50%" _selected={{ color: 'white', bg: 'teal.500' }}>
+          <Tab w="50%" _selected={{ color: 'white', bg: 'purple.800' }}>
             Strecka
           </Tab>
-          <Tab w="50%" _selected={{ color: 'white', bg: 'teal.500' }}>
+          <Tab w="50%" _selected={{ color: 'white', bg: 'purple.800' }}>
             Plussa
           </Tab>
         </TabList>
