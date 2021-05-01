@@ -16,3 +16,9 @@ export interface CreatePurchaseDto {
   productId: string;
   personId: string;
 }
+
+export interface CreatePaymentDto {
+  amount: number;
+  reference: string;
+  personId: string;
+}
