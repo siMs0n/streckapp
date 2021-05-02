@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, HStack, Input, useNumberInput } from '@chakra-ui/react';
+import { Flex, IconButton, Text } from '@chakra-ui/react';
+import { AddIcon, MinusIcon } from '@chakra-ui/icons';
 
 type NumberInputMobileProps = {
   value: number;
@@ -7,35 +8,20 @@ type NumberInputMobileProps = {
 };
 
 const NumberInputMobile = ({ value, onChange }: NumberInputMobileProps) => {
-  const {
-    getInputProps,
-    getIncrementButtonProps,
-    getDecrementButtonProps,
-  } = useNumberInput({
-    defaultValue: 1,
-    value,
-    min: 1,
-    max: 50,
-  });
-
-  const inc = getIncrementButtonProps();
-  const dec = getDecrementButtonProps();
-  const input = getInputProps();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange && onChange(parseInt(event.target.value));
-  };
-
   return (
-    <HStack maxW="320px">
-      <Button {...dec} onClick={() => onChange(value - 1)}>
-        -
-      </Button>
-      <Input {...input} value={value} onChange={handleChange} />
-      <Button {...inc} onClick={() => onChange(value + 1)}>
-        +
-      </Button>
-    </HStack>
+    <Flex justifyContent="space-around" maxW="320px">
+      <IconButton
+        aria-label="Subtract"
+        icon={<MinusIcon />}
+        onClick={() => onChange(Math.max(1, value - 1))}
+      ></IconButton>
+      <Text fontSize="3xl">{value}</Text>
+      <IconButton
+        aria-label="Add"
+        icon={<AddIcon />}
+        onClick={() => onChange(Math.min(50, value + 1))}
+      ></IconButton>
+    </Flex>
   );
 };
 

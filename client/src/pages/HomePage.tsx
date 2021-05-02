@@ -255,6 +255,7 @@ export default function HomePage() {
                     placeholder="Välj dryck"
                     value={selectedProduct?._id || ''}
                     onChange={onChangeSelectedProduct}
+                    textAlign="center"
                   >
                     {products.map((product) => (
                       <option value={product._id} key={product._id}>
@@ -264,7 +265,9 @@ export default function HomePage() {
                   </Select>
                 </Box>
                 <Box w={300} mt={8} textAlign="left">
-                  <Text mb={2}>Antal</Text>
+                  <Text mb={2} textAlign="center">
+                    Antal
+                  </Text>
                   <NumberInputMobile value={quantity} onChange={setQuantity} />
                 </Box>
                 <Box w={300} mt={16} display="flex" justifyContent="center">
