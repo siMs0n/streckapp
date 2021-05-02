@@ -28,6 +28,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import SwishIcon from '../images/SwishIcon';
 import { CheckIcon } from '@chakra-ui/icons';
+import usePinAuth from '../hooks/usePinAuth';
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -41,6 +42,7 @@ interface SwishPayment {
 }
 
 export default function HomePage() {
+  const { isLoading: authIsLoading } = usePinAuth();
   const [showSpinner, setShowSpinner] = React.useState(false);
   const [selectedProduct, setSelectedProduct] = React.useState<Product>();
   const [selectedPersonId, setSelectedPersonId] = React.useState<string>(
@@ -50,7 +52,7 @@ export default function HomePage() {
   const [tabIndex, setTabIndex] = React.useState(0);
   const [buttonSuccess, setButtonSuccess] = React.useState(false);
   const [swishPayment, setSwishPayment] = React.useState<SwishPayment>();
-  const [showPaymentSuccess, setShowPaymentSuccess] = React.useState(true);
+  const [showPaymentSuccess, setShowPaymentSuccess] = React.useState(false);
 
   const { data: products } = useQuery('products', getProducts);
   const { data: persons } = useQuery('persons', getPersons);
@@ -162,7 +164,7 @@ export default function HomePage() {
     paymentMutation.mutate(payment);
   };
 
-  if (showSpinner) {
+  if (showSpinner || authIsLoading) {
     return (
       <Container centerContent>
         <Flex flexDirection="column" alignItems="center" mt={8}>

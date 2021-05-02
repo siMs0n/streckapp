@@ -22,3 +22,8 @@ export interface CreatePaymentDto {
   reference: string;
   personId: string;
 }
+
+export interface Settings {
+  pin: string;
+  swishNumber: string;
+}
