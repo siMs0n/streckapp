@@ -7,7 +7,6 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class SettingsController {
   constructor(private readonly settingsService: SettingsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   find() {
     return this.settingsService.find();
