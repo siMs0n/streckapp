@@ -32,3 +32,7 @@ export const isAdmin = async () => {
   const response = await authHttpClient.get('is-logged-in');
   return response.data;
 };
+
+export const addPerson = async (name: string) => {
+  return authHttpClient.post(`persons`, {name, balance: 0});
+};
