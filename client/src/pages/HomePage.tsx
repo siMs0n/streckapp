@@ -24,6 +24,7 @@ import {
   getProducts,
   makePurchase,
   makePayment,
+  getSettings,
 } from '../api/api-methods';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import SwishIcon from '../images/SwishIcon';
@@ -56,6 +57,7 @@ export default function HomePage() {
 
   const { data: products } = useQuery('products', getProducts);
   const { data: persons } = useQuery('persons', getPersons);
+  const { data: settings } = useQuery('settings', getSettings);
   const queryClient = useQueryClient();
   const purchaseMutation = useMutation(makePurchase, {
     onSuccess: () => {
@@ -126,12 +128,11 @@ export default function HomePage() {
   ) => {
     const amount = parseInt((event.target as HTMLInputElement).value);
     if (amount) {
-      const swishNumber = '';
       const reference = makeID();
       const swishData = {
         version: 1,
         payee: {
-          value: swishNumber,
+          value: settings?.swishPhoneNumber,
         },
         message: {
           value: 'Plussa: ' + reference,

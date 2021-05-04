@@ -30,8 +30,8 @@ export interface CreateProductDto {
 }
 
 export interface Settings {
-  pin: string;
-  swishNumber: string;
+  pin?: string;
+  swishPhoneNumber?: string;
 }
 
 export interface Payment {

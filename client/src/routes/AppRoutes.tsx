@@ -10,6 +10,7 @@ import PersonsPage from '../pages/admin/PersonsPage';
 import ProductsPage from '../pages/admin/ProductsPage';
 import PaymentsPage from '../pages/admin/PaymentsPage';
 import PurchasesPage from '../pages/admin/PurchasesPage';
+import SettingsPage from '../pages/admin/SettingsPage';
 
 export default function AppRoutes() {
   return (
@@ -32,6 +33,7 @@ const AdminRoutes = () => {
       <Route exact path={paths.adminProductsUrl} component={ProductsPage} />
       <Route exact path={paths.adminPaymentsUrl} component={PaymentsPage} />
       <Route exact path={paths.adminPurchasesUrl} component={PurchasesPage} />
+      <Route exact path={paths.adminSettingsUrl} component={SettingsPage} />
     </Switch>
   );
 };
