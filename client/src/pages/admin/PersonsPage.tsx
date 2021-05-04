@@ -6,29 +6,18 @@ import {
   Flex,
   Heading,
   Input,
-  Link,
   Table,
-  TableCaption,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
-  VStack,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { Link as RouterLink } from 'react-router-dom';
 import { addPerson } from '../../api/admin-api-methods';
 import { getPersons } from '../../api/api-methods';
-import {
-  adminPersonsUrl,
-  adminProductsUrl,
-  adminPaymentsUrl,
-  adminPurchasesUrl,
-  adminSettingsUrl,
-} from '../../routes/paths';
+import AdminMenu from '../../components/AdminMenu';
 
 export default function PersonsPage() {
   const [newPersonName, setNewPersonName] = useState('');
@@ -54,23 +43,7 @@ export default function PersonsPage() {
       </Heading>
       <Flex>
         <Box w={200}>
-          <VStack alignItems="flex-start">
-            <Link as={RouterLink} to={adminPersonsUrl} fontSize="xl">
-              Användare
-            </Link>
-            <Link as={RouterLink} to={adminProductsUrl} fontSize="xl">
-              Produkter
-            </Link>
-            <Link as={RouterLink} to={adminPaymentsUrl} fontSize="xl">
-              Betalningar
-            </Link>
-            <Link as={RouterLink} to={adminPurchasesUrl} fontSize="xl">
-              Streck
-            </Link>
-            <Link as={RouterLink} to={adminSettingsUrl} fontSize="xl">
-              Inställningar
-            </Link>
-          </VStack>
+          <AdminMenu />
         </Box>
         <Box mr={8}>
           <Box borderWidth="1px" borderRadius="lg" p={4}>

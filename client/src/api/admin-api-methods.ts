@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const authHttpClient = axios.create({
-  baseURL: 'http://localhost:4000/', //'https://streckapp.herokuapp.com/',
+  baseURL: 'https://streckapp.herokuapp.com/',
 });
 
 authHttpClient.interceptors.request.use(
@@ -34,5 +34,5 @@ export const isAdmin = async () => {
 };
 
 export const addPerson = async (name: string) => {
-  return authHttpClient.post(`persons`, {name, balance: 0});
+  return authHttpClient.post(`persons`, { name, balance: 0 });
 };
