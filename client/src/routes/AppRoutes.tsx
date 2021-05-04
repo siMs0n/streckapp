@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -7,6 +7,7 @@ import PinPage from '../pages/PinPage';
 import * as paths from './paths';
 import useAdminAuth from '../hooks/useAdminAuth';
 import PersonsPage from '../pages/admin/PersonsPage';
+import ProductsPage from '../pages/admin/ProductsPage';
 
 export default function AppRoutes() {
   return (
@@ -24,7 +25,9 @@ const AdminRoutes = () => {
   useAdminAuth();
   return (
     <Switch>
+      <Redirect exact path={paths.adminBaseUrl} to={paths.adminPersonsUrl} />
       <Route exact path={paths.adminPersonsUrl} component={PersonsPage} />
+      <Route exact path={paths.adminProductsUrl} component={ProductsPage} />
     </Switch>
   );
 };

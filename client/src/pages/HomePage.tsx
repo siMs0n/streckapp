@@ -220,11 +220,13 @@ export default function HomePage() {
           onChange={onChangeSelectedPerson}
           value={selectedPersonId}
         >
-          {persons?.map((person) => (
-            <option value={person._id} key={person._id}>
-              {person.name}
-            </option>
-          ))}
+          {persons
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            .map((person) => (
+              <option value={person._id} key={person._id}>
+                {person.name}
+              </option>
+            ))}
         </Select>
         <Spacer />
         <Box>
@@ -257,11 +259,13 @@ export default function HomePage() {
                     onChange={onChangeSelectedProduct}
                     textAlign="center"
                   >
-                    {products.map((product) => (
-                      <option value={product._id} key={product._id}>
-                        {product.name} ({product.price} kr)
-                      </option>
-                    ))}
+                    {products
+                      .filter((p) => p.available)
+                      .map((product) => (
+                        <option value={product._id} key={product._id}>
+                          {product.name} ({product.price} kr)
+                        </option>
+                      ))}
                   </Select>
                 </Box>
                 <Box w={300} mt={8} textAlign="left">
@@ -306,7 +310,11 @@ export default function HomePage() {
               <Box>
                 <Box w={300} mb={8} textAlign="left">
                   <Text mb={2}>Summa att plussa (kr)</Text>
-                  <Input placeholder="400" onChange={onChangePaymentAmount} />
+                  <Input
+                    placeholder="400"
+                    onChange={onChangePaymentAmount}
+                    type="number"
+                  />
                 </Box>
                 {swishPayment && (
                   <MotionBox

@@ -23,6 +23,12 @@ export interface CreatePaymentDto {
   personId: string;
 }
 
+export interface CreateProductDto {
+  name: string;
+  price: number;
+  available: boolean;
+}
+
 export interface Settings {
   pin: string;
   swishNumber: string;

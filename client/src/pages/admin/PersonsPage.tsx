@@ -56,7 +56,7 @@ export default function PersonsPage() {
               </Thead>
               <Tbody>
                 {data?.map((person) => (
-                  <Tr>
+                  <Tr key={person._id}>
                     <Td>{person.name}</Td>
                     <Td>{person.balance} kr</Td>
                   </Tr>
