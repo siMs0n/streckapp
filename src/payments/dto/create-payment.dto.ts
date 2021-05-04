@@ -10,5 +10,5 @@ export class CreatePaymentDto {
   readonly reference: string;
 
   @IsNotEmpty()
-  readonly personId: string;
+  readonly person: string;
 }

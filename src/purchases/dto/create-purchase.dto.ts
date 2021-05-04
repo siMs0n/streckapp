@@ -7,10 +7,10 @@ export class CreatePurchaseDto {
   readonly quantity: number;
 
   @IsNotEmpty()
-  readonly productId: string;
+  readonly product: string;
 
   @IsNotEmpty()
-  readonly personId: string;
+  readonly person: string;
 }
 
 export class CreatePopulatedPurchaseDto {
@@ -29,8 +29,8 @@ export class CreatePopulatedPurchaseDto {
   readonly quantity: number;
 
   @IsNotEmpty()
-  readonly productId: string;
+  readonly product: string;
 
   @IsNotEmpty()
-  readonly personId: string;
+  readonly person: string;
 }

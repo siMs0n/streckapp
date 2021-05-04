@@ -13,14 +13,14 @@ export interface Person {
 
 export interface CreatePurchaseDto {
   quantity: number;
-  productId: string;
-  personId: string;
+  product: string;
+  person: string;
 }
 
 export interface CreatePaymentDto {
   amount: number;
   reference: string;
-  personId: string;
+  person: string;
 }
 
 export interface CreateProductDto {
@@ -32,4 +32,13 @@ export interface CreateProductDto {
 export interface Settings {
   pin: string;
   swishNumber: string;
+}
+
+export interface Payment {
+  _id: string;
+  amount: number;
+  reference: string;
+  person: Person;
+  createdAt: string;
+  updatedAt: string;
 }

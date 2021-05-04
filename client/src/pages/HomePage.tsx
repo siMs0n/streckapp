@@ -112,9 +112,9 @@ export default function HomePage() {
       return;
     }
     const purchase = {
-      productId: selectedProduct._id,
+      product: selectedProduct._id,
       quantity,
-      personId: selectedPersonId,
+      person: selectedPersonId,
     };
     purchaseMutation.mutate(purchase);
   };
@@ -159,7 +159,7 @@ export default function HomePage() {
     const payment = {
       amount: swishPayment.amount,
       reference: swishPayment.reference,
-      personId: selectedPersonId,
+      person: selectedPersonId,
     };
     paymentMutation.mutate(payment);
   };

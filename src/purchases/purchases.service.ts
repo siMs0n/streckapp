@@ -19,11 +19,9 @@ export class PurchasesService {
   ) {}
 
   async create(createPurchaseDto: CreatePurchaseDto): Promise<Purchase> {
-    const person = await this.personsService.findOne(
-      createPurchaseDto.personId,
-    );
+    const person = await this.personsService.findOne(createPurchaseDto.person);
     const product = await this.productsService.findOne(
-      createPurchaseDto.productId,
+      createPurchaseDto.product,
     );
 
     const createPopulatedPurchaseDto: CreatePopulatedPurchaseDto = {
@@ -43,12 +41,15 @@ export class PurchasesService {
   }
 
   async findAll(): Promise<Purchase[]> {
-    return this.purchaseModel.find().exec();
+    return this.purchaseModel.find().populate('person product').exec();
   }
 
   async findOne(id: string) {
     try {
-      return await this.purchaseModel.findById(id).exec();
+      return await this.purchaseModel
+        .findById(id)
+        .populate('person product')
+        .exec();
     } catch (error) {
       throw new NotFoundException('Could not find purchase.');
     }

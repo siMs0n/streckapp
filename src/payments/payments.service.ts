@@ -14,7 +14,7 @@ export class PaymentsService {
   ) {}
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
-    const person = await this.personsService.findOne(createPaymentDto.personId);
+    const person = await this.personsService.findOne(createPaymentDto.person);
 
     const createdPayment = new this.paymentModel(createPaymentDto).save();
 
@@ -25,12 +25,12 @@ export class PaymentsService {
   }
 
   async findAll(): Promise<Payment[]> {
-    return this.paymentModel.find().populate('personId').exec();
+    return this.paymentModel.find().populate('person').exec();
   }
 
   async findOne(id: string) {
     try {
-      return await this.paymentModel.findById(id).exec();
+      return await this.paymentModel.findById(id).populate('person').exec();
     } catch (error) {
       throw new NotFoundException('Could not find payment.');
     }

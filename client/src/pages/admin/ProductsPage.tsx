@@ -33,12 +33,12 @@ export default function ProductsPage() {
   });
 
   const onAddProduct = () => {
-    if (
-      newProduct.name &&
-      newProduct.price &&
-      newProduct.available !== undefined
-    ) {
-      addProductMutation.mutate(newProduct as CreateProductDto);
+    if (newProduct.name && newProduct.price) {
+      const productToAdd = { ...newProduct };
+      if (productToAdd.available === undefined) {
+        productToAdd.available = false;
+      }
+      addProductMutation.mutate(productToAdd as CreateProductDto);
       setNewProduct({});
     }
   };

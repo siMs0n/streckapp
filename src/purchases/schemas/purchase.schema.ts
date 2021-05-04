@@ -6,7 +6,7 @@ import { Product } from 'src/products/schemas/product.schema';
 
 export type PurchaseDocument = Purchase & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Purchase {
   @IsInt()
   @Min(1)
@@ -29,13 +29,13 @@ export class Purchase {
     type: MongooseSchema.Types.ObjectId,
     ref: Product.name,
   })
-  productId: Types.ObjectId;
+  product: Types.ObjectId;
 
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     ref: Person.name,
   })
-  personId: Types.ObjectId;
+  person: Types.ObjectId;
 }
 
 export const PurchaseSchema = SchemaFactory.createForClass(Purchase);

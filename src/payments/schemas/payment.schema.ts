@@ -5,7 +5,7 @@ import { Person } from 'src/persons/schemas/person.schema';
 
 export type PaymentDocument = Payment & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Payment {
   @IsInt()
   @Min(1)
@@ -20,7 +20,7 @@ export class Payment {
     type: MongooseSchema.Types.ObjectId,
     ref: Person.name,
   })
-  personId: Types.ObjectId;
+  person: Types.ObjectId;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);
