@@ -8,6 +8,7 @@ import * as paths from './paths';
 import useAdminAuth from '../hooks/useAdminAuth';
 import PersonsPage from '../pages/admin/PersonsPage';
 import ProductsPage from '../pages/admin/ProductsPage';
+import PaymentsPage from '../pages/admin/PaymentsPage';
 
 export default function AppRoutes() {
   return (
@@ -28,6 +29,7 @@ const AdminRoutes = () => {
       <Redirect exact path={paths.adminBaseUrl} to={paths.adminPersonsUrl} />
       <Route exact path={paths.adminPersonsUrl} component={PersonsPage} />
       <Route exact path={paths.adminProductsUrl} component={ProductsPage} />
+      <Route exact path={paths.adminPaymentsUrl} component={PaymentsPage} />
     </Switch>
   );
 };

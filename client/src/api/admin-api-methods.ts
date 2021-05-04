@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateProductDto } from '../types';
+import { CreateProductDto, Payment } from '../types';
 
 const authHttpClient = axios.create({
   baseURL: 'https://streckapp.herokuapp.com/',
@@ -40,4 +40,9 @@ export const addPerson = async (name: string) => {
 
 export const addProduct = async (product: CreateProductDto) => {
   return authHttpClient.post(`products`, product);
+};
+
+export const getPayments = async (): Promise<Payment[]> => {
+  const response = await authHttpClient.get('payments');
+  return response.data;
 };
