@@ -11,17 +11,17 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { getPayments } from '../../api/admin-api-methods';
+import { getPurchases } from '../../api/admin-api-methods';
 import AdminMenu from '../../components/AdminMenu';
 import dayjs from 'dayjs';
 
-export default function PaymentsPage() {
-  const { data } = useQuery('payments', getPayments);
+export default function PurchasesPage() {
+  const { data } = useQuery('purchases', getPurchases);
 
   return (
     <Container paddingTop="150px" pl={8} maxW={1600}>
       <Heading mb={4} ml="200px">
-        Betalningar
+        Streck
       </Heading>
       <Flex>
         <Box w={200}>
@@ -29,13 +29,14 @@ export default function PaymentsPage() {
         </Box>
         <Box mr={8}>
           <Box borderWidth="1px" borderRadius="lg" p={4}>
-            <Table variant="simple" colorScheme="purple" w={600}>
+            <Table variant="simple" colorScheme="purple" w={700}>
               <Thead>
                 <Tr>
                   <Th>Tid</Th>
                   <Th>Användare</Th>
+                  <Th>Produkt</Th>
+                  <Th>Antal</Th>
                   <Th>Summa</Th>
-                  <Th>Referens</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -43,14 +44,15 @@ export default function PaymentsPage() {
                   ?.sort((a, b) =>
                     dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1,
                   )
-                  .map((payment) => (
-                    <Tr key={payment._id}>
+                  .map((purchase) => (
+                    <Tr key={purchase._id}>
                       <Td>
-                        {dayjs(payment.createdAt).format('YYYY-MM-DD HH:mm')}
+                        {dayjs(purchase.createdAt).format('YYYY-MM-DD HH:mm')}
                       </Td>
-                      <Td>{payment.person.name}</Td>
-                      <Td>{payment.amount} kr</Td>
-                      <Td>{payment.reference}</Td>
+                      <Td>{purchase.person.name}</Td>
+                      <Td>{purchase.product.name}</Td>
+                      <Td>{purchase.quantity}</Td>
+                      <Td>{purchase.amount} kr</Td>
                     </Tr>
                   ))}
               </Tbody>

@@ -8,7 +8,7 @@ import {
 } from '../types';
 
 const httpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'http://localhost:4000', //'https://streckapp.herokuapp.com/',
 });
 
 export const getProducts = async (): Promise<Product[]> => {

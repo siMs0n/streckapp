@@ -42,3 +42,14 @@ export interface Payment {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Purchase {
+  _id: string;
+  amount: number;
+  unitPrice: number;
+  quantity: number;
+  person: Person;
+  product: Product;
+  createdAt: string;
+  updatedAt: string;
+}
