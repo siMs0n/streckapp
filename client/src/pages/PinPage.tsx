@@ -1,8 +1,9 @@
-import { Container, Flex, Heading, Input } from '@chakra-ui/react';
+import { Container, Flex, Heading, Input, Link, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
-import { useHistory } from 'react-router';
+import { useHistory, Link as RouterLink } from 'react-router-dom';
 import { getSettings } from '../api/api-methods';
+import { loginUrl } from '../routes/paths';
 
 export default function PinPage() {
   const { data: settings } = useQuery('settings', getSettings);
@@ -22,7 +23,7 @@ export default function PinPage() {
         justifyContent="center"
         height="100vh"
       >
-        <Heading size="lg" mb={16}>
+        <Heading size="lg" my={16}>
           Ange pinkoden för att logga in
         </Heading>
         <Input
@@ -33,6 +34,13 @@ export default function PinPage() {
           type="number"
           fontSize="large"
         />
+        <Text mt={12}>
+          Eller logga in{' '}
+          <Link as={RouterLink} to={loginUrl} textDecoration="underline">
+            här
+          </Link>{' '}
+          om du är admin
+        </Text>
       </Flex>
     </Container>
   );
