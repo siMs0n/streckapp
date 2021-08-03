@@ -50,8 +50,8 @@ export default function PurchasesPage() {
                       <Td>
                         {dayjs(purchase.createdAt).format('YYYY-MM-DD HH:mm')}
                       </Td>
-                      <Td>{purchase.person.name}</Td>
-                      <Td>{purchase.product.name}</Td>
+                      <Td>{purchase?.person?.name || 'Borttagen'}</Td>
+                      <Td>{purchase?.product?.name || 'Borttagen'}</Td>
                       <Td>{purchase.quantity}</Td>
                       <Td>{purchase.amount} kr</Td>
                     </Tr>

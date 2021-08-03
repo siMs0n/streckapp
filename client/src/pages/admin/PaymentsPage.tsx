@@ -49,7 +49,7 @@ export default function PaymentsPage() {
                       <Td>
                         {dayjs(payment.createdAt).format('YYYY-MM-DD HH:mm')}
                       </Td>
-                      <Td>{payment.person.name}</Td>
+                      <Td>{payment?.person?.name || 'Borttagen'}</Td>
                       <Td>{payment.amount} kr</Td>
                       <Td>{payment.reference}</Td>
                     </Tr>

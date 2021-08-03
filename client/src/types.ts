@@ -38,7 +38,7 @@ export interface Payment {
   _id: string;
   amount: number;
   reference: string;
-  person: Person;
+  person?: Person;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,8 +48,8 @@ export interface Purchase {
   amount: number;
   unitPrice: number;
   quantity: number;
-  person: Person;
-  product: Product;
+  person?: Person;
+  product?: Product;
   createdAt: string;
   updatedAt: string;
 }
