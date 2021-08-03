@@ -32,7 +32,7 @@ const DeletePopover: React.FC<DeletePopoverProps> = ({
           border="0"
           d="flex"
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="flex-end"
           pb={4}
         >
           <ButtonGroup size="sm">

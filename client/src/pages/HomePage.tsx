@@ -6,6 +6,12 @@ import {
   Flex,
   Heading,
   Input,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverFooter,
+  PopoverTrigger,
   Select,
   Spacer,
   Spinner,
@@ -15,6 +21,7 @@ import {
   TabPanels,
   Tabs,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Product } from '../types';
@@ -54,6 +61,11 @@ export default function HomePage() {
   const [buttonSuccess, setButtonSuccess] = React.useState(false);
   const [swishPayment, setSwishPayment] = React.useState<SwishPayment>();
   const [showPaymentSuccess, setShowPaymentSuccess] = React.useState(false);
+  const {
+    isOpen: isConfirmPaymentOpen,
+    onOpen: onConfirmPaymentOpen,
+    onClose: onConfirmPaymentClose,
+  } = useDisclosure();
 
   const { data: products } = useQuery('products', getProducts);
   const { data: persons } = useQuery('persons', getPersons);
@@ -217,6 +229,7 @@ export default function HomePage() {
       <Flex w="100%" py={2} alignItems="center">
         <Select
           w={200}
+          maxW="60%"
           placeholder="Välj person"
           onChange={onChangeSelectedPerson}
           value={selectedPersonId}
@@ -235,7 +248,7 @@ export default function HomePage() {
         </Box>
       </Flex>
       <Text mt={8}>{tabIndex === 0 ? 'Streckar på:' : 'Plussar på:'}</Text>
-      <Heading as="h1" size="2xl" mt={4} mb={16}>
+      <Heading as="h1" size="2xl" mt={4} mb={10}>
         {selectedPerson?.name}
       </Heading>
       <Tabs
@@ -325,15 +338,43 @@ export default function HomePage() {
                   >
                     <SwishButton link={swishPayment.swishLink} />
                     <Text mt={8}>Tryck på bekräfta efter du har swishat</Text>
-                    <Button
-                      mt={4}
-                      colorScheme="purple"
-                      onClick={onConfirmPayment}
-                      loading={paymentMutation.isLoading}
-                      loadingText="Laddar"
+                    <Popover
+                      isOpen={isConfirmPaymentOpen}
+                      onClose={onConfirmPaymentClose}
                     >
-                      Bekräfta
-                    </Button>
+                      <PopoverTrigger>
+                        <Button
+                          mt={4}
+                          colorScheme="purple"
+                          onClick={onConfirmPaymentOpen}
+                          loading={paymentMutation.isLoading}
+                          loadingText="Laddar"
+                        >
+                          Bekräfta
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <PopoverArrow />
+                        <PopoverBody>Har du swishat?</PopoverBody>
+                        <PopoverFooter
+                          border="0"
+                          d="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                          pb={4}
+                        >
+                          <Button
+                            colorScheme="purple"
+                            onClick={() => {
+                              onConfirmPaymentClose();
+                              onConfirmPayment();
+                            }}
+                          >
+                            Ja
+                          </Button>
+                        </PopoverFooter>
+                      </PopoverContent>
+                    </Popover>
                   </MotionBox>
                 )}
               </Box>
