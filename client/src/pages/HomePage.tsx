@@ -389,10 +389,18 @@ export default function HomePage() {
           w="100%"
           maxWidth={600}
         >
-          <Tab w="50%" _selected={{ color: 'white', bg: 'purple.800' }}>
+          <Tab
+            w="50%"
+            _selected={{ color: 'white', bg: 'purple.800' }}
+            bg="gray.700"
+          >
             Strecka
           </Tab>
-          <Tab w="50%" _selected={{ color: 'white', bg: 'purple.800' }}>
+          <Tab
+            w="50%"
+            _selected={{ color: 'white', bg: 'purple.800' }}
+            bg="gray.700"
+          >
             Plussa
           </Tab>
         </TabList>
