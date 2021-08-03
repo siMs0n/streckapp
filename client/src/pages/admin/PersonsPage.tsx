@@ -1,31 +1,68 @@
-import { AddIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
   Button,
   Container,
   Flex,
   Heading,
+  IconButton,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { addPerson } from '../../api/admin-api-methods';
+import {
+  addPerson,
+  deletePerson,
+  updatePerson,
+} from '../../api/admin-api-methods';
 import { getPersons } from '../../api/api-methods';
 import AdminMenu from '../../components/AdminMenu';
+import DeletePopover from '../../components/DeletePopover';
+import { Person } from '../../types';
 
 export default function PersonsPage() {
   const [newPersonName, setNewPersonName] = useState('');
+  const [personToEdit, setPersonToEdit] = useState<Person>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
   const queryClient = useQueryClient();
   const { data } = useQuery('persons', getPersons);
   const addPersonMutation = useMutation(addPerson, {
     onSuccess: () => {
       queryClient.invalidateQueries('persons');
+    },
+  });
+  const deletePersonMutation = useMutation(deletePerson, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('persons');
+      toast({
+        description: 'Användare borttagen',
+        status: 'success',
+      });
+    },
+  });
+  const updatePersonMutation = useMutation(updatePerson, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('persons');
+      toast({
+        description: 'Användare uppdaterad',
+        status: 'success',
+      });
     },
   });
 
@@ -34,6 +71,20 @@ export default function PersonsPage() {
       addPersonMutation.mutate(newPersonName);
       setNewPersonName('');
     }
+  };
+
+  const onDeletePerson = (personId: string) => {
+    deletePersonMutation.mutate(personId);
+  };
+
+  const onUpdatePerson = (updatedPerson: Person) => {
+    updatePersonMutation.mutate(updatedPerson);
+    onCloseUpdateModal();
+  };
+
+  const onCloseUpdateModal = () => {
+    setPersonToEdit(undefined);
+    onClose();
   };
 
   return (
@@ -52,6 +103,7 @@ export default function PersonsPage() {
                 <Tr>
                   <Th>Namn</Th>
                   <Th>Saldo</Th>
+                  <Th>Redigera / Ta bort</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -59,6 +111,27 @@ export default function PersonsPage() {
                   <Tr key={person._id}>
                     <Td>{person.name}</Td>
                     <Td>{person.balance} kr</Td>
+                    <Td>
+                      <IconButton
+                        aria-label="Redigera"
+                        icon={<EditIcon />}
+                        mr={3}
+                        onClick={() => {
+                          setPersonToEdit(person);
+                          onOpen();
+                        }}
+                      />
+                      <DeletePopover
+                        name={person.name}
+                        onDelete={() => onDeletePerson(person._id)}
+                      >
+                        <IconButton
+                          aria-label="Ta bort"
+                          icon={<DeleteIcon />}
+                          colorScheme="red"
+                        />
+                      </DeletePopover>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
@@ -82,6 +155,74 @@ export default function PersonsPage() {
           </Button>
         </Box>
       </Flex>
+      {personToEdit && (
+        <EditPersonModal
+          person={personToEdit}
+          isOpen={isOpen}
+          onClose={onCloseUpdateModal}
+          onSave={onUpdatePerson}
+        />
+      )}
     </Container>
   );
 }
+
+type EditPersonModalProps = {
+  person: Person;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (person: Person) => void;
+};
+
+const EditPersonModal = ({
+  person,
+  isOpen,
+  onClose,
+  onSave,
+}: EditPersonModalProps) => {
+  const [name, setName] = useState(person.name);
+  const [balanceText, setBalanceText] = useState(person.balance + '');
+  const toast = useToast();
+  const savePerson = () => {
+    if (name && !isNaN(parseInt(balanceText))) {
+      onSave({ ...person, name, balance: parseInt(balanceText) });
+    } else {
+      toast({
+        description: 'Något gick fel',
+        status: 'error',
+      });
+    }
+  };
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Redigera "{person.name}"</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Input
+            placeholder="Namn"
+            my={8}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></Input>
+          <Input
+            placeholder="Saldo"
+            mb={8}
+            value={balanceText}
+            onChange={(e) => setBalanceText(e.target.value)}
+          ></Input>
+        </ModalBody>
+
+        <ModalFooter>
+          <Button mr={3} onClick={onClose}>
+            Avbryt
+          </Button>
+          <Button colorScheme="green" onClick={savePerson}>
+            Spara
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};

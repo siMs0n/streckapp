@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   CreateProductDto,
   Payment,
+  Person,
   Product,
   Purchase,
   Settings,
@@ -42,6 +43,14 @@ export const isAdmin = async () => {
 
 export const addPerson = async (name: string) => {
   return authHttpClient.post(`persons`, { name, balance: 0 });
+};
+
+export const updatePerson = async (person: Person) => {
+  return authHttpClient.put(`persons/${person._id}`, person);
+};
+
+export const deletePerson = async (personId: string) => {
+  return authHttpClient.delete(`persons/${personId}`);
 };
 
 export const addProduct = async (product: CreateProductDto) => {

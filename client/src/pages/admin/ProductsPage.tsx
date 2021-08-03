@@ -94,6 +94,11 @@ export default function ProductsPage() {
 
   const onUpdateProduct = (updatedProduct: Product) => {
     updateProductMutation.mutate(updatedProduct);
+    onCloseUpdateModal();
+  };
+
+  const onCloseUpdateModal = () => {
+    setProductToEdit(undefined);
     onClose();
   };
 
@@ -114,7 +119,7 @@ export default function ProductsPage() {
                   <Th>Namn</Th>
                   <Th>Saldo</Th>
                   <Th>Tillgänglig</Th>
-                  <Th>Redigera/Ta bort</Th>
+                  <Th>Redigera / Ta bort</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -197,7 +202,7 @@ export default function ProductsPage() {
         <EditProductModal
           product={productToEdit}
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={onCloseUpdateModal}
           onSave={onUpdateProduct}
         />
       )}
