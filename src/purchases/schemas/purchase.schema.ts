@@ -3,6 +3,7 @@ import { IsInt, Min, Max } from 'class-validator';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Person } from 'src/persons/schemas/person.schema';
 import { Product } from 'src/products/schemas/product.schema';
+import { Instance } from 'src/instances/schemas/instance.schema';
 
 export type PurchaseDocument = Purchase & Document;
 
@@ -36,6 +37,12 @@ export class Purchase {
     ref: Person.name,
   })
   person: Types.ObjectId;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Instance.name,
+  })
+  instance: Types.ObjectId;
 }
 
 export const PurchaseSchema = SchemaFactory.createForClass(Purchase);

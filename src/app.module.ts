@@ -10,6 +10,7 @@ import { PurchasesModule } from './purchases/purchases.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { SettingsModule } from './settings/settings.module';
+import { InstancesModule } from './instances/instances.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SettingsModule } from './settings/settings.module';
     PaymentsModule,
     PurchasesModule,
     SettingsModule,
+    InstancesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

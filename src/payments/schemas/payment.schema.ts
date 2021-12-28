@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsInt, Min, Max } from 'class-validator';
 import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 import { Person } from 'src/persons/schemas/person.schema';
+import { Instance } from 'src/instances/schemas/instance.schema';
 
 export type PaymentDocument = Payment & Document;
 
@@ -21,6 +22,12 @@ export class Payment {
     ref: Person.name,
   })
   person: Types.ObjectId;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Instance.name,
+  })
+  instance: Types.ObjectId;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

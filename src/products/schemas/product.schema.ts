@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IsInt } from 'class-validator';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
+import { Instance } from 'src/instances/schemas/instance.schema';
 
 export type ProductDocument = Product & Document;
 
@@ -15,6 +16,12 @@ export class Product {
 
   @Prop({ required: true })
   available: boolean;
+
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Instance.name,
+  })
+  instance: Types.ObjectId;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
