@@ -1,15 +1,22 @@
 import React from 'react';
 import { Link, VStack } from '@chakra-ui/react';
-import { Link as RouterLink, matchPath, useLocation } from 'react-router-dom';
 import {
-  adminPersonsUrl,
-  adminProductsUrl,
-  adminPaymentsUrl,
-  adminPurchasesUrl,
+  Link as RouterLink,
+  matchPath,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
+import {
   adminSettingsUrl,
+  getAdminPersonsUrl,
+  getAdminProductsUrl,
+  getAdminPaymentsUrl,
+  getAdminPurchasesUrl,
 } from '../routes/paths';
 
 export default function AdminMenu() {
+  const { instanceId } = useParams<{ instanceId?: string }>();
+  const instanceIdString = instanceId ?? '';
   const location = useLocation();
   const matchPage = (path: string) => {
     return Boolean(matchPath(location.pathname, { path, exact: true }));
@@ -18,33 +25,41 @@ export default function AdminMenu() {
     <VStack alignItems="flex-start">
       <Link
         as={RouterLink}
-        to={adminPersonsUrl}
+        to={getAdminPersonsUrl(instanceIdString)}
         fontSize="xl"
-        textDecoration={matchPage(adminPersonsUrl) ? 'underline' : ''}
+        textDecoration={
+          matchPage(getAdminPersonsUrl(instanceIdString)) ? 'underline' : ''
+        }
       >
         Användare
       </Link>
       <Link
         as={RouterLink}
-        to={adminProductsUrl}
+        to={getAdminProductsUrl(instanceIdString)}
         fontSize="xl"
-        textDecoration={matchPage(adminProductsUrl) ? 'underline' : ''}
+        textDecoration={
+          matchPage(getAdminProductsUrl(instanceIdString)) ? 'underline' : ''
+        }
       >
         Produkter
       </Link>
       <Link
         as={RouterLink}
-        to={adminPaymentsUrl}
+        to={getAdminPaymentsUrl(instanceIdString)}
         fontSize="xl"
-        textDecoration={matchPage(adminPaymentsUrl) ? 'underline' : ''}
+        textDecoration={
+          matchPage(getAdminPaymentsUrl(instanceIdString)) ? 'underline' : ''
+        }
       >
         Betalningar
       </Link>
       <Link
         as={RouterLink}
-        to={adminPurchasesUrl}
+        to={getAdminPurchasesUrl(instanceIdString)}
         fontSize="xl"
-        textDecoration={matchPage(adminPurchasesUrl) ? 'underline' : ''}
+        textDecoration={
+          matchPage(getAdminPurchasesUrl(instanceIdString)) ? 'underline' : ''
+        }
       >
         Streck
       </Link>

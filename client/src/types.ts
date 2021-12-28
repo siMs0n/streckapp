@@ -33,6 +33,7 @@ export interface CreateProductDto {
   name: string;
   price: number;
   available: boolean;
+  instance: string;
 }
 
 export interface Settings {

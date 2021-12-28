@@ -25,52 +25,21 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import {
-  addProduct,
-  deleteProduct,
-  updateProduct,
-} from '../../api/admin-api-methods';
-import { getProducts } from '../../api/api-methods';
+import { useMutation, useQueryClient } from 'react-query';
 import AdminMenu from '../../components/AdminMenu';
 import { CreateProductDto, Product } from '../../types';
 import { IconButton } from '@chakra-ui/react';
 import DeletePopover from '../../components/DeletePopover';
+import useProducts from '../../hooks/useProducts';
 
 export default function ProductsPage() {
-  const [newProduct, setNewProduct] = useState<Partial<CreateProductDto>>({});
+  const [newProduct, setNewProduct] = useState<
+    Partial<Omit<CreateProductDto, 'instance'>>
+  >({});
   const [productToEdit, setProductToEdit] = useState<Product>();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const queryClient = useQueryClient();
-  const { data } = useQuery('products', getProducts);
-  const addProductMutation = useMutation(addProduct, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('products');
-      toast({
-        description: 'Produkt skapad',
-        status: 'success',
-      });
-    },
-  });
-  const deleteProductMutation = useMutation(deleteProduct, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('products');
-      toast({
-        description: 'Produkt borttagen',
-        status: 'success',
-      });
-    },
-  });
-  const updateProductMutation = useMutation(updateProduct, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('products');
-      toast({
-        description: 'Produkt uppdaterad',
-        status: 'success',
-      });
-    },
-  });
+  const { products, addProduct, updateProduct, deleteProduct } = useProducts();
 
   const onAddProduct = () => {
     if (newProduct.name && newProduct.price && newProduct.price > 0) {
@@ -78,7 +47,7 @@ export default function ProductsPage() {
       if (productToAdd.available === undefined) {
         productToAdd.available = false;
       }
-      addProductMutation.mutate(productToAdd as CreateProductDto);
+      addProduct(productToAdd as Omit<CreateProductDto, 'instance'>);
       setNewProduct({});
     } else {
       toast({
@@ -88,12 +57,8 @@ export default function ProductsPage() {
     }
   };
 
-  const onDeleteProduct = (productId: string) => {
-    deleteProductMutation.mutate(productId);
-  };
-
   const onUpdateProduct = (updatedProduct: Product) => {
-    updateProductMutation.mutate(updatedProduct);
+    updateProduct(updatedProduct);
     onCloseUpdateModal();
   };
 
@@ -123,7 +88,7 @@ export default function ProductsPage() {
                 </Tr>
               </Thead>
               <Tbody>
-                {data?.map((product) => (
+                {products?.map((product) => (
                   <Tr key={product._id}>
                     <Td>{product.name}</Td>
                     <Td>{product.price} kr</Td>
@@ -140,7 +105,7 @@ export default function ProductsPage() {
                       />
                       <DeletePopover
                         name={product.name}
-                        onDelete={() => onDeleteProduct(product._id)}
+                        onDelete={() => deleteProduct(product._id)}
                       >
                         <IconButton
                           aria-label="Ta bort"

@@ -9,11 +9,13 @@ import {
 } from '../types';
 
 const httpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'http://localhost:5000', //'https://streckapp.herokuapp.com/',
 });
 
-export const getProducts = async (): Promise<Product[]> => {
-  const response = await httpClient.get('products');
+export const getProducts = async (instanceId?: string): Promise<Product[]> => {
+  const response = await httpClient.get('products', {
+    params: { ...(instanceId && { instance: instanceId }) },
+  });
   return response.data;
 };
 
