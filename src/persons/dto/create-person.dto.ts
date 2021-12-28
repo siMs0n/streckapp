@@ -5,4 +5,6 @@ export class CreatePersonDto {
   readonly name: string;
   @IsInt()
   readonly balance: number;
+  @IsNotEmpty()
+  readonly instance: string;
 }

@@ -6,4 +6,6 @@ export class CreateProductDto {
   @IsInt()
   readonly price: number;
   readonly available: boolean;
+  @IsNotEmpty()
+  readonly instance: string;
 }

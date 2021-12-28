@@ -11,4 +11,7 @@ export class CreatePaymentDto {
 
   @IsNotEmpty()
   readonly person: string;
+
+  @IsNotEmpty()
+  readonly instance: string;
 }

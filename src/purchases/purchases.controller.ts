@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PurchasesService } from './purchases.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
@@ -21,8 +22,8 @@ export class PurchasesController {
   }
 
   @Get()
-  findAll() {
-    return this.purchasesService.findAll();
+  findAll(@Query('instance') instance: string) {
+    return this.purchasesService.findAll(instance);
   }
 
   @Get(':id')

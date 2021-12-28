@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -24,8 +25,8 @@ export class PaymentsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.paymentsService.findAll();
+  findAll(@Query('instance') instance: string) {
+    return this.paymentsService.findAll(instance);
   }
 
   @Get(':id')

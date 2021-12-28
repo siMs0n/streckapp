@@ -24,8 +24,11 @@ export class PaymentsService {
     return createdPayment;
   }
 
-  async findAll(): Promise<Payment[]> {
-    return this.paymentModel.find().populate('person').exec();
+  async findAll(instance?: string): Promise<Payment[]> {
+    return this.paymentModel
+      .find(instance ? { instance } : undefined)
+      .populate('person')
+      .exec();
   }
 
   async findOne(id: string) {

@@ -41,6 +41,7 @@ export class Purchase {
   @Prop({
     type: MongooseSchema.Types.ObjectId,
     ref: Instance.name,
+    index: true,
   })
   instance: Types.ObjectId;
 }

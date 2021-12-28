@@ -16,8 +16,8 @@ export class PersonsService {
     return createdPerson.save();
   }
 
-  async findAll(): Promise<Person[]> {
-    return this.personModel.find().exec();
+  async findAll(instance?: string): Promise<Person[]> {
+    return this.personModel.find(instance ? { instance } : undefined).exec();
   }
 
   async findOne(id: string) {

@@ -40,8 +40,11 @@ export class PurchasesService {
     return createdPurchase;
   }
 
-  async findAll(): Promise<Purchase[]> {
-    return this.purchaseModel.find().populate('person product').exec();
+  async findAll(instance?: string): Promise<Purchase[]> {
+    return this.purchaseModel
+      .find({ instance })
+      .populate('person product')
+      .exec();
   }
 
   async findOne(id: string) {
