@@ -11,24 +11,58 @@ import ProductsPage from '../pages/admin/ProductsPage';
 import PaymentsPage from '../pages/admin/PaymentsPage';
 import PurchasesPage from '../pages/admin/PurchasesPage';
 import SettingsPage from '../pages/admin/SettingsPage';
+import InstancesPage from '../pages/InstancesPage';
+import AdminInstancesPage from '../pages/admin/AdminInstancesPage';
 
 export default function AppRoutes() {
   return (
     <Switch>
-      <Route exact path={paths.baseUrl} component={HomePage} />
+      <Route exact path={paths.baseUrl} component={InstancesPage} />
+      <Route path={paths.baseInstanceUrl} component={InstanceRoutes} />
       <Route exact path={paths.loginUrl} component={LoginPage} />
-      <Route exact path={paths.pinUrl} component={PinPage} />
       <Route path={paths.adminBaseUrl} component={AdminRoutes} />
       <Route component={NotFoundPage} />
     </Switch>
   );
 }
 
+const InstanceRoutes = () => {
+  return (
+    <Switch>
+      <Redirect exact path={paths.instanceUrl} to={paths.homeUrl} />
+      <Route exact path={paths.homeUrl} component={HomePage} />
+      <Route exact path={paths.pinUrl} component={PinPage} />
+    </Switch>
+  );
+};
+
 const AdminRoutes = () => {
   useAdminAuth();
   return (
     <Switch>
-      <Redirect exact path={paths.adminBaseUrl} to={paths.adminPersonsUrl} />
+      <Redirect
+        exact
+        path={paths.adminBaseUrl}
+        to={paths.adminBaseInstanceUrl}
+      />
+      <Route
+        exact
+        path={paths.adminBaseInstanceUrl}
+        component={AdminInstancesPage}
+      />
+      <Route path={paths.adminInstanceUrl} component={AdminInstanceRoutes} />
+    </Switch>
+  );
+};
+
+const AdminInstanceRoutes = () => {
+  return (
+    <Switch>
+      <Redirect
+        exact
+        path={paths.adminInstanceUrl}
+        to={paths.adminPersonsUrl}
+      />
       <Route exact path={paths.adminPersonsUrl} component={PersonsPage} />
       <Route exact path={paths.adminProductsUrl} component={ProductsPage} />
       <Route exact path={paths.adminPaymentsUrl} component={PaymentsPage} />

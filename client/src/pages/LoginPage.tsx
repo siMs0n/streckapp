@@ -26,7 +26,6 @@ export default function LoginPage() {
   const loginMutation = useMutation(adminLogin, {
     onSuccess: (data) => {
       localStorage.setItem('token', data.access_token);
-      console.log('data', data);
       history.push('/admin');
     },
   });

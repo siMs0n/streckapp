@@ -15,11 +15,12 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
-import { useQueryClient, useMutation, useQuery } from 'react-query';
-import { getSettings, makePayment } from '../../api/api-methods';
+import { useQueryClient, useMutation } from 'react-query';
+import { makePayment } from '../../api/api-methods';
 import { usePrevious } from '../../hooks/usePrevious';
 import SwishIcon from '../../images/SwishIcon';
 import { Person } from '../../types';
+import useCurrentInstance from '../../hooks/useCurrentInstance';
 
 const MotionBox = motion(Box);
 
@@ -43,7 +44,7 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
     onClose: onConfirmPaymentClose,
   } = useDisclosure();
 
-  const { data: settings } = useQuery('settings', getSettings);
+  const { instance } = useCurrentInstance();
   const queryClient = useQueryClient();
 
   const paymentMutation = useMutation(makePayment, {
@@ -73,7 +74,7 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
       const swishData = {
         version: 1,
         payee: {
-          value: settings?.swishPhoneNumber,
+          value: instance?.swishPhoneNumber,
         },
         message: {
           value: 'Plussa: ' + reference,

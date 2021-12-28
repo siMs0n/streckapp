@@ -5,6 +5,7 @@ import {
   Person,
   Product,
   Settings,
+  Instance,
 } from '../types';
 
 const httpClient = axios.create({
@@ -16,8 +17,10 @@ export const getProducts = async (): Promise<Product[]> => {
   return response.data;
 };
 
-export const getPersons = async (): Promise<Person[]> => {
-  const response = await httpClient.get('persons');
+export const getPersons = async (instanceId?: string): Promise<Person[]> => {
+  const response = await httpClient.get('persons', {
+    params: { ...(instanceId && { instance: instanceId }) },
+  });
   return response.data;
 };
 
@@ -31,6 +34,16 @@ export const makePayment = async (payment: CreatePaymentDto) => {
 
 export const getSettings = async (): Promise<Settings> => {
   const response = await httpClient.get('settings');
+  return response.data;
+};
+
+export const getInstances = async (): Promise<Instance[]> => {
+  const response = await httpClient.get('instances');
+  return response.data;
+};
+
+export const getInstance = async (instanceId: string): Promise<Instance> => {
+  const response = await httpClient.get(`instances/${instanceId}`);
   return response.data;
 };
 

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import {
   CreateProductDto,
+  CreateInstanceDto,
   Payment,
   Person,
   Product,
   Purchase,
   Settings,
+  CreatePersonDto,
 } from '../types';
 
 const authHttpClient = axios.create({
@@ -41,8 +43,8 @@ export const isAdmin = async () => {
   return response.data;
 };
 
-export const addPerson = async (name: string) => {
-  return authHttpClient.post(`persons`, { name, balance: 0 });
+export const addPerson = async (person: CreatePersonDto) => {
+  return authHttpClient.post(`persons`, person);
 };
 
 export const updatePerson = async (person: Person) => {
@@ -77,4 +79,8 @@ export const getPurchases = async (): Promise<Purchase[]> => {
 
 export const saveSettings = async (settings: Settings) => {
   return authHttpClient.put(`settings`, settings);
+};
+
+export const addInstance = async (instance: CreateInstanceDto) => {
+  return authHttpClient.post(`instances`, instance);
 };

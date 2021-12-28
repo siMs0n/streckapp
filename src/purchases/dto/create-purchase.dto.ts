@@ -11,6 +11,9 @@ export class CreatePurchaseDto {
 
   @IsNotEmpty()
   readonly person: string;
+
+  @IsNotEmpty()
+  readonly instance: string;
 }
 
 export class CreatePopulatedPurchaseDto {
@@ -33,4 +36,7 @@ export class CreatePopulatedPurchaseDto {
 
   @IsNotEmpty()
   readonly person: string;
+
+  @IsNotEmpty()
+  readonly instance: string;
 }

@@ -1,28 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { getSettings } from '../api/api-methods';
 import { useHistory } from 'react-router';
 import { pinUrl } from '../routes/paths';
+import useCurrentInstance from './useCurrentInstance';
 
 //Client side pin auth is used for convenience. Not supposed to be secure.
 export default function usePinAuth() {
   const [authorized, setAuthorized] = useState(false);
-  const { data: settings, isFetched, isLoading } = useQuery(
-    'settings',
-    getSettings,
-  );
+  const { instance, isLoading, isFetched } = useCurrentInstance();
   const history = useHistory();
   useEffect(() => {
-    if (isFetched) {
-      const localPin = localStorage.getItem('pin');
-      if (settings?.pin === localPin) {
+    if (isFetched && instance) {
+      const localPin = localStorage.getItem(`${instance?._id}/pin`);
+      // eslint-disable-next-line eqeqeq
+      if (instance?.pin == localPin) {
         setAuthorized(true);
       } else {
         setAuthorized(false);
         history.push(pinUrl);
       }
     }
-  }, [settings, isFetched, history]);
+  }, [instance, isFetched, history]);
 
   return { authorized, isLoading };
 }

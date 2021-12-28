@@ -14,12 +14,13 @@ import {
   Tabs,
   Text,
 } from '@chakra-ui/react';
-import { getPersons, getProducts } from '../api/api-methods';
+import { getProducts } from '../api/api-methods';
 import { useQuery } from 'react-query';
 import usePinAuth from '../hooks/usePinAuth';
 import SelectPerson from '../components/home/SelectPerson';
 import ProductsTab from '../components/home/ProductsTab';
 import PaymentTab from '../components/home/PaymentTab';
+import usePersons from '../hooks/usePersons';
 
 let loadingTimeout: NodeJS.Timeout;
 
@@ -32,7 +33,7 @@ export default function HomePage() {
   const [tabIndex, setTabIndex] = useState(0);
 
   const { data: products } = useQuery('products', getProducts);
-  const { data: persons } = useQuery('persons', getPersons);
+  const { persons } = usePersons();
 
   //Show spinner if server is cold starting and takes extra long to load
   useEffect(() => {

@@ -11,6 +11,12 @@ export interface Person {
   balance: number;
 }
 
+export interface CreatePersonDto {
+  name: string;
+  balance: number;
+  instance: string;
+}
+
 export interface CreatePurchaseDto {
   quantity: number;
   product: string;
@@ -52,4 +58,19 @@ export interface Purchase {
   product?: Product;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Instance {
+  _id: string;
+  name: string;
+  year: number;
+  pin?: string;
+  swishPhoneNumber?: string;
+}
+
+export interface CreateInstanceDto {
+  name: string;
+  year: number;
+  pin?: string;
+  swishPhoneNumber?: string;
 }

@@ -23,62 +23,32 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import {
-  addPerson,
-  deletePerson,
-  updatePerson,
-} from '../../api/admin-api-methods';
-import { getPersons } from '../../api/api-methods';
+import { useState } from 'react';
+import AdminInstanceHeader from '../../components/AdminInstanceHeader';
 import AdminMenu from '../../components/AdminMenu';
 import DeletePopover from '../../components/DeletePopover';
+import usePersons from '../../hooks/usePersons';
 import { Person } from '../../types';
 
 export default function PersonsPage() {
   const [newPersonName, setNewPersonName] = useState('');
   const [personToEdit, setPersonToEdit] = useState<Person>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
-  const queryClient = useQueryClient();
-  const { data } = useQuery('persons', getPersons);
-  const addPersonMutation = useMutation(addPerson, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('persons');
-    },
-  });
-  const deletePersonMutation = useMutation(deletePerson, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('persons');
-      toast({
-        description: 'Användare borttagen',
-        status: 'success',
-      });
-    },
-  });
-  const updatePersonMutation = useMutation(updatePerson, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('persons');
-      toast({
-        description: 'Användare uppdaterad',
-        status: 'success',
-      });
-    },
-  });
+  const { persons, addPerson, updatePerson, deletePerson } = usePersons();
 
   const onAddPerson = () => {
     if (newPersonName) {
-      addPersonMutation.mutate(newPersonName);
+      addPerson(newPersonName);
       setNewPersonName('');
     }
   };
 
   const onDeletePerson = (personId: string) => {
-    deletePersonMutation.mutate(personId);
+    deletePerson(personId);
   };
 
   const onUpdatePerson = (updatedPerson: Person) => {
-    updatePersonMutation.mutate(updatedPerson);
+    updatePerson(updatedPerson);
     onCloseUpdateModal();
   };
 
@@ -88,81 +58,84 @@ export default function PersonsPage() {
   };
 
   return (
-    <Container paddingTop="150px" pl={8} maxW={1600}>
-      <Heading mb={4} ml="200px">
-        Användare
-      </Heading>
-      <Flex>
-        <Box w={200}>
-          <AdminMenu />
-        </Box>
-        <Box mr={8}>
-          <Box borderWidth="1px" borderRadius="lg" p={4}>
-            <Table variant="simple" colorScheme="purple" w={600}>
-              <Thead>
-                <Tr>
-                  <Th>Namn</Th>
-                  <Th>Saldo</Th>
-                  <Th>Redigera / Ta bort</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {data?.map((person) => (
-                  <Tr key={person._id}>
-                    <Td>{person.name}</Td>
-                    <Td>{person.balance} kr</Td>
-                    <Td>
-                      <IconButton
-                        aria-label="Redigera"
-                        icon={<EditIcon />}
-                        mr={3}
-                        onClick={() => {
-                          setPersonToEdit(person);
-                          onOpen();
-                        }}
-                      />
-                      <DeletePopover
-                        name={person.name}
-                        onDelete={() => onDeletePerson(person._id)}
-                      >
-                        <IconButton
-                          aria-label="Ta bort"
-                          icon={<DeleteIcon />}
-                          colorScheme="red"
-                        />
-                      </DeletePopover>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+    <Container paddingTop="50px" pl={8} maxW={1600}>
+      <AdminInstanceHeader />
+      <Flex pt="100px" flexDirection="column">
+        <Heading mb={4} ml="200px">
+          Användare
+        </Heading>
+        <Flex>
+          <Box w={200}>
+            <AdminMenu />
           </Box>
-        </Box>
-        <Box maxW="md" borderWidth="1px" borderRadius="lg" p={4}>
-          <Heading size="md">Lägg till ny användare</Heading>
-          <Input
-            placeholder="Namn"
-            my={8}
-            value={newPersonName}
-            onChange={(e) => setNewPersonName(e.target.value)}
-          ></Input>
-          <Button
-            rightIcon={<AddIcon />}
-            colorScheme="green"
-            onClick={onAddPerson}
-          >
-            Lägg till
-          </Button>
-        </Box>
+          <Box mr={8}>
+            <Box borderWidth="1px" borderRadius="lg" p={4}>
+              <Table variant="simple" colorScheme="purple" w={600}>
+                <Thead>
+                  <Tr>
+                    <Th>Namn</Th>
+                    <Th>Saldo</Th>
+                    <Th>Redigera / Ta bort</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {persons?.map((person) => (
+                    <Tr key={person._id}>
+                      <Td>{person.name}</Td>
+                      <Td>{person.balance} kr</Td>
+                      <Td>
+                        <IconButton
+                          aria-label="Redigera"
+                          icon={<EditIcon />}
+                          mr={3}
+                          onClick={() => {
+                            setPersonToEdit(person);
+                            onOpen();
+                          }}
+                        />
+                        <DeletePopover
+                          name={person.name}
+                          onDelete={() => onDeletePerson(person._id)}
+                        >
+                          <IconButton
+                            aria-label="Ta bort"
+                            icon={<DeleteIcon />}
+                            colorScheme="red"
+                          />
+                        </DeletePopover>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+          </Box>
+          <Box maxW="md" borderWidth="1px" borderRadius="lg" p={4}>
+            <Heading size="md">Lägg till ny användare</Heading>
+            <Input
+              placeholder="Namn"
+              my={8}
+              value={newPersonName}
+              onChange={(e) => setNewPersonName(e.target.value)}
+            ></Input>
+            <Button
+              rightIcon={<AddIcon />}
+              colorScheme="green"
+              onClick={onAddPerson}
+            >
+              Lägg till
+            </Button>
+          </Box>
+        </Flex>
+        {personToEdit && (
+          <EditPersonModal
+            person={personToEdit}
+            isOpen={isOpen}
+            onClose={onCloseUpdateModal}
+            onSave={onUpdatePerson}
+          />
+        )}
       </Flex>
-      {personToEdit && (
-        <EditPersonModal
-          person={personToEdit}
-          isOpen={isOpen}
-          onClose={onCloseUpdateModal}
-          onSave={onUpdatePerson}
-        />
-      )}
     </Container>
   );
 }
