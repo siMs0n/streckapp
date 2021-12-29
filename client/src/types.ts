@@ -28,6 +28,7 @@ export interface CreatePaymentDto {
   amount: number;
   reference: string;
   person: string;
+  instance: string;
 }
 
 export interface CreateProductDto {

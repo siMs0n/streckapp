@@ -11,13 +11,12 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
-import { getPayments } from '../../api/admin-api-methods';
 import AdminMenu from '../../components/AdminMenu';
 import dayjs from 'dayjs';
+import usePayments from '../../hooks/usePayments';
 
 export default function PaymentsPage() {
-  const { data } = useQuery('payments', getPayments);
+  const { payments } = usePayments();
 
   return (
     <Container paddingTop="150px" pl={8} maxW={1600}>
@@ -40,7 +39,7 @@ export default function PaymentsPage() {
                 </Tr>
               </Thead>
               <Tbody>
-                {data
+                {payments
                   ?.sort((a, b) =>
                     dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1,
                   )

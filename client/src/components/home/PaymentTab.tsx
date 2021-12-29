@@ -96,13 +96,14 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
   };
 
   const onConfirmPayment = () => {
-    if (!selectedPerson?._id || !swishPayment) {
+    if (!selectedPerson?._id || !swishPayment || !instance) {
       return;
     }
     const payment = {
       amount: swishPayment.amount,
       reference: swishPayment.reference,
       person: selectedPerson._id,
+      instance: instance._id,
     };
     paymentMutation.mutate(payment);
   };

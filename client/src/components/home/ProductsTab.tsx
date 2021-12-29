@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { makePurchase } from '../../api/api-methods';
+import useCurrentInstance from '../../hooks/useCurrentInstance';
 import { Product } from '../../types';
 import NumberInputMobile from '../NumberInputMobile';
 
@@ -15,6 +16,7 @@ interface ProductsTabProps {
 }
 
 const ProductsTab = ({ products, selectedPersonId }: ProductsTabProps) => {
+  const { instance } = useCurrentInstance();
   const [selectedProduct, setSelectedProduct] = useState<Product>();
   const [quantity, setQuantity] = useState(1);
   const [buttonSuccess, setButtonSuccess] = useState(false);
@@ -41,13 +43,14 @@ const ProductsTab = ({ products, selectedPersonId }: ProductsTabProps) => {
   };
 
   const handlePurchase = () => {
-    if (!selectedPersonId || !selectedProduct || quantity < 1) {
+    if (!selectedPersonId || !selectedProduct || quantity < 1 || !instance) {
       return;
     }
     const purchase = {
       product: selectedProduct._id,
       quantity,
       person: selectedPersonId,
+      instance: instance._id,
     };
     purchaseMutation.mutate(purchase);
   };

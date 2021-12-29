@@ -67,8 +67,10 @@ export const deleteProduct = async (productId: string) => {
   return authHttpClient.delete(`products/${productId}`);
 };
 
-export const getPayments = async (): Promise<Payment[]> => {
-  const response = await authHttpClient.get('payments');
+export const getPayments = async (instanceId?: string): Promise<Payment[]> => {
+  const response = await authHttpClient.get('payments', {
+    params: { ...(instanceId && { instance: instanceId }) },
+  });
   return response.data;
 };
 
