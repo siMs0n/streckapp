@@ -72,8 +72,12 @@ export const getPayments = async (): Promise<Payment[]> => {
   return response.data;
 };
 
-export const getPurchases = async (): Promise<Purchase[]> => {
-  const response = await authHttpClient.get('purchases');
+export const getPurchases = async (
+  instanceId?: string,
+): Promise<Purchase[]> => {
+  const response = await authHttpClient.get('purchases', {
+    params: { ...(instanceId && { instance: instanceId }) },
+  });
   return response.data;
 };
 

@@ -21,6 +21,7 @@ export interface CreatePurchaseDto {
   quantity: number;
   product: string;
   person: string;
+  instance: string;
 }
 
 export interface CreatePaymentDto {

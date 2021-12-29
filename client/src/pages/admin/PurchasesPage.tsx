@@ -11,13 +11,12 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { useQuery } from 'react-query';
-import { getPurchases } from '../../api/admin-api-methods';
 import AdminMenu from '../../components/AdminMenu';
 import dayjs from 'dayjs';
+import usePurchases from '../../hooks/usePurchases';
 
 export default function PurchasesPage() {
-  const { data } = useQuery('purchases', getPurchases);
+  const { purchases } = usePurchases();
 
   return (
     <Container paddingTop="150px" pl={8} maxW={1600}>
@@ -41,7 +40,7 @@ export default function PurchasesPage() {
                 </Tr>
               </Thead>
               <Tbody>
-                {data
+                {purchases
                   ?.sort((a, b) =>
                     dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1,
                   )
