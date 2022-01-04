@@ -11,7 +11,7 @@ export default function AdminInstanceHeader() {
     <HStack alignItems="baseline">
       <Heading mr={2}>{instance?.name}</Heading>
       <Link as={RouterLink} to={adminBaseInstanceUrl} fontSize="small">
-        Välj annat spex
+        Byt spex
       </Link>
     </HStack>
   );

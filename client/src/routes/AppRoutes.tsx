@@ -18,7 +18,8 @@ export default function AppRoutes() {
   return (
     <Switch>
       <Route exact path={paths.baseUrl} component={InstancesPage} />
-      <Route path={paths.baseInstanceUrl} component={InstanceRoutes} />
+      <Route exact path={paths.baseInstanceUrl} component={InstancesPage} />
+      <Route path={paths.instanceUrl} component={InstanceRoutes} />
       <Route exact path={paths.loginUrl} component={LoginPage} />
       <Route path={paths.adminBaseUrl} component={AdminRoutes} />
       <Route component={NotFoundPage} />

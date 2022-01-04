@@ -20,6 +20,7 @@ import ProductsTab from '../components/home/ProductsTab';
 import PaymentTab from '../components/home/PaymentTab';
 import usePersons from '../hooks/usePersons';
 import useProducts from '../hooks/useProducts';
+import InstanceHeader from '../components/InstanceHeader';
 
 let loadingTimeout: NodeJS.Timeout;
 
@@ -81,6 +82,7 @@ export default function HomePage() {
 
   return (
     <Container centerContent maxW={600}>
+      <InstanceHeader />
       <Flex w="100%" py={2} alignItems="center">
         <Select
           w={200}

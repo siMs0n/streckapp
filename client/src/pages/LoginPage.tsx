@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { adminLogin } from '../api/api-methods';
 import useAdminAuth from '../hooks/useAdminAuth';
-import { adminPersonsUrl } from '../routes/paths';
+import { adminBaseInstanceUrl } from '../routes/paths';
 
 export default function LoginPage() {
   const {
@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!adminAuth.isLoading && adminAuth.authorized) {
-      history.push(adminPersonsUrl);
+      history.push(adminBaseInstanceUrl);
     }
   }, [adminAuth, history]);
 
