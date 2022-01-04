@@ -25,7 +25,6 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import AdminMenu from '../../components/AdminMenu';
 import { CreateProductDto, Product } from '../../types';
 import { IconButton } from '@chakra-ui/react';

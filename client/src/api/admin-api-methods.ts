@@ -6,7 +6,6 @@ import {
   Person,
   Product,
   Purchase,
-  Settings,
   CreatePersonDto,
   Instance,
 } from '../types';

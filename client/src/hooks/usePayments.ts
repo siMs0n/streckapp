@@ -1,13 +1,9 @@
-import { useToast } from '@chakra-ui/react';
-import { useCallback } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { getPayments } from '../api/admin-api-methods';
 import useCurrentInstance from './useCurrentInstance';
 
 export default function usePayments() {
   const { instance } = useCurrentInstance();
-  const toast = useToast();
-  const queryClient = useQueryClient();
   const { data } = useQuery(
     ['payments', instance?._id],
     () => getPayments(instance?._id),
