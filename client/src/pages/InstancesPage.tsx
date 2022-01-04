@@ -12,7 +12,8 @@ export default function InstancesPage() {
   const history = useHistory();
 
   const onSelectInstance = (instance: Instance) => {
-    if (instance.pin) {
+    const localPin = localStorage.getItem(`${instance._id}/pin`);
+    if (instance.pin && localPin !== instance.pin) {
       history.push(getPinUrl(instance._id));
     } else {
       history.push(getInstanceUrl(instance._id));

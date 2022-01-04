@@ -67,7 +67,7 @@ export interface Instance {
   _id: string;
   name: string;
   year: number;
-  pin?: string;
+  pin?: string | null;
   swishPhoneNumber?: string;
 }
 

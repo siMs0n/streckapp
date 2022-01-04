@@ -29,5 +29,7 @@ export const adminPurchasesUrl = `${adminInstanceUrl}purchases`;
 export const getAdminPurchasesUrl = (instanceId: string) =>
   `${getAdminInstanceUrl(instanceId)}purchases`;
 export const adminSettingsUrl = `${adminInstanceUrl}settings`;
+export const getAdminSettingsUrl = (instanceId: string) =>
+  `${getAdminInstanceUrl(instanceId)}settings`;
 
 export default baseUrl;

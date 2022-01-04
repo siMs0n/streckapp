@@ -7,11 +7,11 @@ import {
   useParams,
 } from 'react-router-dom';
 import {
-  adminSettingsUrl,
   getAdminPersonsUrl,
   getAdminProductsUrl,
   getAdminPaymentsUrl,
   getAdminPurchasesUrl,
+  getAdminSettingsUrl,
 } from '../routes/paths';
 
 export default function AdminMenu() {
@@ -65,9 +65,11 @@ export default function AdminMenu() {
       </Link>
       <Link
         as={RouterLink}
-        to={adminSettingsUrl}
+        to={getAdminSettingsUrl(instanceIdString)}
         fontSize="xl"
-        textDecoration={matchPage(adminSettingsUrl) ? 'underline' : ''}
+        textDecoration={
+          matchPage(getAdminSettingsUrl(instanceIdString)) ? 'underline' : ''
+        }
       >
         Inställningar
       </Link>

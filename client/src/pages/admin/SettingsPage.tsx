@@ -1,80 +1,64 @@
-import {
-  Box,
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Input,
-  Text,
-} from '@chakra-ui/react';
-import React, { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import { saveSettings } from '../../api/admin-api-methods';
-import { getSettings } from '../../api/api-methods';
+import { Box, Container, Flex, Heading, useToast } from '@chakra-ui/react';
+import React from 'react';
+import { useQueryClient, useMutation } from 'react-query';
+import { updateInstance } from '../../api/admin-api-methods';
+import AdminInstanceHeader from '../../components/AdminInstanceHeader';
 import AdminMenu from '../../components/AdminMenu';
+import CreateEditInstance, {
+  InstanceFormInputs,
+} from '../../components/CreateEditInstance';
+import useCurrentInstance from '../../hooks/useCurrentInstance';
 
 export default function SettingsPage() {
-  const { data } = useQuery('settings', getSettings, {
-    retry: false,
+  const { instance } = useCurrentInstance();
+
+  const toast = useToast();
+
+  const queryClient = useQueryClient();
+  const updateInstanceMutation = useMutation(updateInstance, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('instances');
+      toast({
+        description: 'Spex uppdaterat',
+        status: 'success',
+      });
+    },
   });
-  const [swishPhoneNumber, setSwishPhoneNumber] = useState('');
-  const [pin, setPin] = useState('');
 
-  useEffect(() => {
-    if (data) {
-      setSwishPhoneNumber(data.swishPhoneNumber || '');
-      setPin(data.pin || '');
-    }
-  }, [data]);
-
-  const onSaveSettings = () => {
-    if (swishPhoneNumber && swishPhoneNumber.length !== 10) {
-      return;
-    }
-    if (pin && pin.length !== 4) {
-      return;
-    }
-    saveSettings({ pin, swishPhoneNumber });
+  const onSaveInstance = ({
+    name,
+    year,
+    swishPhoneNumber,
+    pin,
+  }: InstanceFormInputs) => {
+    if (!instance) return;
+    const instanceToSave = {
+      _id: instance._id,
+      name,
+      year,
+      swishPhoneNumber,
+      pin,
+    };
+    updateInstanceMutation.mutate(instanceToSave);
   };
 
   return (
-    <Container paddingTop="150px" pl={8} maxW={1600}>
-      <Heading mb={4} ml="200px">
-        Inställningar
-      </Heading>
-      <Flex>
-        <Box w={200}>
-          <AdminMenu />
-        </Box>
-        <Box mr={8}>
-          <Box borderWidth="1px" borderRadius="lg" p={4}>
-            <Text>Swishnummer</Text>
-            <Input
-              mt={4}
-              mb={2}
-              value={swishPhoneNumber}
-              onChange={(e) => setSwishPhoneNumber(e.target.value)}
-            ></Input>
-            {swishPhoneNumber &&
-              (swishPhoneNumber.length !== 10 ||
-                !swishPhoneNumber.match(/^[0-9]*$/)) && (
-                <Text>Mobilnumret måste vara 10 siffor</Text>
-              )}
-            <Text mt={6}>Pinkod</Text>
-            <Input
-              mt={4}
-              mb={2}
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-            ></Input>
-            {pin && (pin.length > 4 || !pin.match(/^[0-9]*$/)) && (
-              <Text>Pinkoden måste vara fyra siffror</Text>
-            )}
-            <Button mt={6} onClick={onSaveSettings} colorScheme="purple">
-              Spara
-            </Button>
+    <Container paddingTop="50px" pl={8} maxW={1600}>
+      <AdminInstanceHeader />
+      <Flex pt="100px" flexDirection="column">
+        <Heading mb={4} ml="200px">
+          Inställningar
+        </Heading>
+        <Flex>
+          <Box w={200}>
+            <AdminMenu />
           </Box>
-        </Box>
+          <Box mr={8}>
+            {instance && (
+              <CreateEditInstance instance={instance} onSave={onSaveInstance} />
+            )}
+          </Box>
+        </Flex>
       </Flex>
     </Container>
   );

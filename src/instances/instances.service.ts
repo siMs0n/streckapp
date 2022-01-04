@@ -31,7 +31,10 @@ export class InstancesService {
   async update(id: string, updateInstanceDto: UpdateInstanceDto) {
     try {
       const result = await this.instanceModel
-        .updateOne({ _id: id }, updateInstanceDto)
+        .updateOne(
+          { _id: id },
+          { ...updateInstanceDto, pin: updateInstanceDto.pin },
+        )
         .exec();
       if (result.n === 0) {
         throw new NotFoundException('Could not find instance to update.');

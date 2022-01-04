@@ -31,6 +31,7 @@ import { CreateProductDto, Product } from '../../types';
 import { IconButton } from '@chakra-ui/react';
 import DeletePopover from '../../components/DeletePopover';
 import useProducts from '../../hooks/useProducts';
+import AdminInstanceHeader from '../../components/AdminInstanceHeader';
 
 export default function ProductsPage() {
   const [newProduct, setNewProduct] = useState<
@@ -68,100 +69,103 @@ export default function ProductsPage() {
   };
 
   return (
-    <Container paddingTop="150px" pl={8} maxW={1600}>
-      <Heading mb={4} ml="200px">
-        Produkter
-      </Heading>
-      <Flex>
-        <Box w={200}>
-          <AdminMenu />
-        </Box>
-        <Box mr={8}>
-          <Box borderWidth="1px" borderRadius="lg" p={4}>
-            <Table variant="simple" colorScheme="purple" w={600}>
-              <Thead>
-                <Tr>
-                  <Th>Namn</Th>
-                  <Th>Saldo</Th>
-                  <Th>Tillgänglig</Th>
-                  <Th>Redigera / Ta bort</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {products?.map((product) => (
-                  <Tr key={product._id}>
-                    <Td>{product.name}</Td>
-                    <Td>{product.price} kr</Td>
-                    <Td>{product.available ? 'Ja' : 'Nej'}</Td>
-                    <Td>
-                      <IconButton
-                        aria-label="Redigera"
-                        icon={<EditIcon />}
-                        mr={3}
-                        onClick={() => {
-                          setProductToEdit(product);
-                          onOpen();
-                        }}
-                      />
-                      <DeletePopover
-                        name={product.name}
-                        onDelete={() => deleteProduct(product._id)}
-                      >
-                        <IconButton
-                          aria-label="Ta bort"
-                          icon={<DeleteIcon />}
-                          colorScheme="red"
-                        />
-                      </DeletePopover>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
+    <Container paddingTop="50px" pl={8} maxW={1600}>
+      <AdminInstanceHeader />
+      <Flex pt="100px" flexDirection="column">
+        <Heading mb={4} ml="200px">
+          Produkter
+        </Heading>
+        <Flex>
+          <Box w={200}>
+            <AdminMenu />
           </Box>
-        </Box>
-        <Box maxW="sm" borderWidth="1px" borderRadius="lg" p={4}>
-          <Heading size="md">Lägg till ny produkt</Heading>
-          <Input
-            placeholder="Namn"
-            my={8}
-            value={newProduct?.name || ''}
-            onChange={(e) =>
-              setNewProduct({ ...newProduct, name: e.target.value })
-            }
-          ></Input>
-          <Input
-            placeholder="Pris"
-            mb={8}
-            value={newProduct?.price || ''}
-            onChange={(e) =>
-              setNewProduct({
-                ...newProduct,
-                price: parseInt(e.target.value) || 0,
-              })
-            }
-          ></Input>
-          <Flex mb={8} alignItems="center">
-            <Text mr={4}>Tillgänglig</Text>
-            <Switch
-              isChecked={Boolean(newProduct?.available)}
+          <Box mr={8}>
+            <Box borderWidth="1px" borderRadius="lg" p={4}>
+              <Table variant="simple" colorScheme="purple" w={600}>
+                <Thead>
+                  <Tr>
+                    <Th>Namn</Th>
+                    <Th>Saldo</Th>
+                    <Th>Tillgänglig</Th>
+                    <Th>Redigera / Ta bort</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {products?.map((product) => (
+                    <Tr key={product._id}>
+                      <Td>{product.name}</Td>
+                      <Td>{product.price} kr</Td>
+                      <Td>{product.available ? 'Ja' : 'Nej'}</Td>
+                      <Td>
+                        <IconButton
+                          aria-label="Redigera"
+                          icon={<EditIcon />}
+                          mr={3}
+                          onClick={() => {
+                            setProductToEdit(product);
+                            onOpen();
+                          }}
+                        />
+                        <DeletePopover
+                          name={product.name}
+                          onDelete={() => deleteProduct(product._id)}
+                        >
+                          <IconButton
+                            aria-label="Ta bort"
+                            icon={<DeleteIcon />}
+                            colorScheme="red"
+                          />
+                        </DeletePopover>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Box>
+          </Box>
+          <Box maxW="sm" borderWidth="1px" borderRadius="lg" p={4}>
+            <Heading size="md">Lägg till ny produkt</Heading>
+            <Input
+              placeholder="Namn"
+              my={8}
+              value={newProduct?.name || ''}
+              onChange={(e) =>
+                setNewProduct({ ...newProduct, name: e.target.value })
+              }
+            ></Input>
+            <Input
+              placeholder="Pris"
+              mb={8}
+              value={newProduct?.price || ''}
               onChange={(e) =>
                 setNewProduct({
                   ...newProduct,
-                  available: !Boolean(newProduct.available),
+                  price: parseInt(e.target.value) || 0,
                 })
               }
-              colorScheme="purple"
-            />
-          </Flex>
-          <Button
-            rightIcon={<AddIcon />}
-            colorScheme="green"
-            onClick={onAddProduct}
-          >
-            Lägg till
-          </Button>
-        </Box>
+            ></Input>
+            <Flex mb={8} alignItems="center">
+              <Text mr={4}>Tillgänglig</Text>
+              <Switch
+                isChecked={Boolean(newProduct?.available)}
+                onChange={(e) =>
+                  setNewProduct({
+                    ...newProduct,
+                    available: !Boolean(newProduct.available),
+                  })
+                }
+                colorScheme="purple"
+              />
+            </Flex>
+            <Button
+              rightIcon={<AddIcon />}
+              colorScheme="green"
+              onClick={onAddProduct}
+            >
+              Lägg till
+            </Button>
+          </Box>
+        </Flex>
       </Flex>
       {productToEdit && (
         <EditProductModal

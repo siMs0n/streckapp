@@ -8,6 +8,7 @@ import {
   Purchase,
   Settings,
   CreatePersonDto,
+  Instance,
 } from '../types';
 
 const authHttpClient = axios.create({
@@ -83,10 +84,10 @@ export const getPurchases = async (
   return response.data;
 };
 
-export const saveSettings = async (settings: Settings) => {
-  return authHttpClient.put(`settings`, settings);
-};
-
 export const addInstance = async (instance: CreateInstanceDto) => {
   return authHttpClient.post(`instances`, instance);
+};
+
+export const updateInstance = async (instance: Instance) => {
+  return authHttpClient.put(`instances/${instance._id}`, instance);
 };
