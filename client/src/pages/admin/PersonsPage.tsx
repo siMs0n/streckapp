@@ -17,6 +17,7 @@ import {
   Table,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -192,14 +193,17 @@ const EditPersonModal = ({
         <ModalHeader>Redigera "{person.name}"</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          <Text mt={4}>Namn</Text>
           <Input
             placeholder="Namn"
-            my={8}
+            mt={2}
             value={name}
             onChange={(e) => setName(e.target.value)}
           ></Input>
+          <Text mt={4}>Saldo</Text>
           <Input
             placeholder="Saldo"
+            mt={2}
             mb={8}
             value={balanceText}
             onChange={(e) => setBalanceText(e.target.value)}

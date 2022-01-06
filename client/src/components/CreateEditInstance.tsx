@@ -71,14 +71,14 @@ export default function CreateEditInstance({
       <Heading as="h2" size="md" mb={4}>
         Lägg till nytt spex
       </Heading>
-      <Text>Name</Text>
+      <Text>Namn</Text>
       <Input mt={4} mb={2} {...register('name')}></Input>
       {errors?.name && (
         <Text color="tomato" mb={2}>
           {errors?.name?.message}
         </Text>
       )}
-      <Text>Year</Text>
+      <Text>År</Text>
       <Input mt={4} mb={2} type="number" {...register('year')}></Input>
       {errors?.year && (
         <Text color="tomato" mb={2}>
