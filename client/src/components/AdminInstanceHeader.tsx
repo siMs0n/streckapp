@@ -15,6 +15,7 @@ export default function AdminInstanceHeader() {
       alignItems="baseline"
       justifyContent="space-between"
       maxW={1600}
+      wrap="wrap"
       pr={4}
     >
       <HStack alignItems="baseline">

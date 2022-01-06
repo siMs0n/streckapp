@@ -52,12 +52,19 @@ export default function AdminInstancesPage() {
   };
 
   return (
-    <Container paddingTop="150px" pl={8} maxW={1600}>
-      <Heading mb={4} ml="200px">
+    <Container pt={{ base: 2, md: '50px' }} pl={{ base: 2, md: 8 }} maxW={1600}>
+      <Heading mb={4} ml={{ base: 0, md: '200px' }}>
         Välj spex
       </Heading>
-      <Flex ml={200}>
-        <Box mr={8} w={200}>
+      <Flex
+        ml={{ base: 0, md: '200px' }}
+        flexDirection={{ base: 'column', md: 'row' }}
+      >
+        <Box
+          mr={{ base: 0, md: 8 }}
+          mb={{ base: 8, md: 0 }}
+          w={{ base: 'auto', md: '200px' }}
+        >
           {instances?.map((instance) => (
             <Box
               key={instance._id}

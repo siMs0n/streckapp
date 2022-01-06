@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, VStack } from '@chakra-ui/react';
+import { Link, Stack } from '@chakra-ui/react';
 import {
   Link as RouterLink,
   matchPath,
@@ -22,7 +22,12 @@ export default function AdminMenu() {
     return Boolean(matchPath(location.pathname, { path, exact: true }));
   };
   return (
-    <VStack alignItems="flex-start">
+    <Stack
+      direction={{ base: 'row', md: 'column' }}
+      alignItems="flex-start"
+      wrap="wrap"
+      mb={4}
+    >
       <Link
         as={RouterLink}
         to={getAdminPersonsUrl(instanceIdString)}
@@ -73,6 +78,6 @@ export default function AdminMenu() {
       >
         Inställningar
       </Link>
-    </VStack>
+    </Stack>
   );
 }

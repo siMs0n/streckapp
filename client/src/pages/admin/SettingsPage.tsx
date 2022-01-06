@@ -43,17 +43,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <Container paddingTop="50px" pl={8} maxW={1600}>
+    <Container pt={{ base: 2, md: '50px' }} pl={{ base: 2, md: 8 }} maxW={1600}>
       <AdminInstanceHeader />
-      <Flex pt="100px" flexDirection="column">
-        <Heading mb={4} ml="200px">
-          Inställningar
+      <Flex pt={{ base: 2, md: '100px' }} flexDirection="column">
+        <Heading mb={4} ml={{ base: 0, md: '200px' }}>
+          Streck
         </Heading>
-        <Flex>
-          <Box w={200}>
+        <Flex flexDirection={{ base: 'column', md: 'row' }}>
+          <Box w={{ base: 'auto', md: 200 }}>
             <AdminMenu />
           </Box>
-          <Box mr={8}>
+          <Box mr={{ base: 0, md: 8 }}>
             {instance && (
               <CreateEditInstance instance={instance} onSave={onSaveInstance} />
             )}
