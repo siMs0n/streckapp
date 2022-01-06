@@ -30,6 +30,8 @@ import AdminMenu from '../../components/AdminMenu';
 import DeletePopover from '../../components/DeletePopover';
 import usePersons from '../../hooks/usePersons';
 import { Person } from '../../types';
+import Papa from 'papaparse';
+import dayjs from 'dayjs';
 
 export default function PersonsPage() {
   const [newPersonName, setNewPersonName] = useState('');
@@ -150,6 +152,9 @@ export default function PersonsPage() {
           />
         )}
       </Flex>
+      <Button onClick={() => exportPersonsToCsv(persons)}>
+        Exportera saldon
+      </Button>
     </Container>
   );
 }
@@ -212,4 +217,30 @@ const EditPersonModal = ({
       </ModalContent>
     </Modal>
   );
+};
+
+const exportPersonsToCsv = (persons?: Person[]) => {
+  if (!persons) {
+    return;
+  }
+  const csv = Papa.unparse(
+    persons.map((p) => ({ Namn: p.name, Saldo: p.balance })),
+  );
+  const blob = new Blob([csv], { type: 'text/plain' });
+
+  // @ts-ignore
+  if (window.navigator.msSaveOrOpenBlob)
+    // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+    // @ts-ignore
+    window.navigator.msSaveBlob(blob, args.filename);
+  else {
+    const a = window.document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = `Saldoexport ${dayjs(new Date()).format(
+      'YYYY-MM-DD HH:mm',
+    )}.csv`;
+    document.body.appendChild(a);
+    a.click(); // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+    document.body.removeChild(a);
+  }
 };
