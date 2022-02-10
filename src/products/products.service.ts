@@ -49,4 +49,8 @@ export class ProductsService {
     }
     return 'Product was deleted';
   }
+
+  async removeAllWithInstance(id: string) {
+    await this.productModel.deleteMany({ instance: id }).exec();
+  }
 }

@@ -16,5 +16,6 @@ import { PersonsModule } from 'src/persons/persons.module';
   ],
   controllers: [PurchasesController],
   providers: [PurchasesService],
+  exports: [PurchasesService],
 })
 export class PurchasesModule {}

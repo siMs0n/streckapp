@@ -12,5 +12,6 @@ import { PersonsModule } from '../persons/persons.module';
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService],
+  exports: [PaymentsService],
 })
 export class PaymentsModule {}

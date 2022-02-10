@@ -49,4 +49,8 @@ export class PersonsService {
     }
     return 'Person was deleted';
   }
+
+  async removeAllWithInstance(id: string) {
+    await this.personModel.deleteMany({ instance: id }).exec();
+  }
 }

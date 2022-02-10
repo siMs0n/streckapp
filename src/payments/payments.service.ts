@@ -60,4 +60,8 @@ export class PaymentsService {
     }
     return 'Payment was deleted';
   }
+
+  async removeAllWithInstance(id: string) {
+    await this.paymentModel.deleteMany({ instance: id }).exec();
+  }
 }

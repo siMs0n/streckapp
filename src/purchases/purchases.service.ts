@@ -79,4 +79,8 @@ export class PurchasesService {
     }
     return 'Purchase was deleted';
   }
+
+  async removeAllWithInstance(id: string) {
+    await this.purchaseModel.deleteMany({ instance: id }).exec();
+  }
 }

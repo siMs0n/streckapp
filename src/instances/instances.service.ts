@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { PaymentsService } from 'src/payments/payments.service';
+import { PersonsService } from 'src/persons/persons.service';
+import { ProductsService } from 'src/products/products.service';
+import { PurchasesService } from 'src/purchases/purchases.service';
 import { CreateInstanceDto } from './dto/create-instance.dto';
 import { UpdateInstanceDto } from './dto/update-instance.dto';
 import { Instance, InstanceDocument } from './schemas/instance.schema';
@@ -9,6 +13,10 @@ import { Instance, InstanceDocument } from './schemas/instance.schema';
 export class InstancesService {
   constructor(
     @InjectModel(Instance.name) private instanceModel: Model<InstanceDocument>,
+    private personsService: PersonsService,
+    private paymentsService: PaymentsService,
+    private productsService: ProductsService,
+    private purchasesService: PurchasesService,
   ) {}
 
   async create(createInstanceDto: CreateInstanceDto): Promise<Instance> {
@@ -47,6 +55,10 @@ export class InstancesService {
 
   async remove(id: string) {
     //TODO: Cascade deletion
+    await this.paymentsService.removeAllWithInstance(id);
+    await this.personsService.removeAllWithInstance(id);
+    await this.productsService.removeAllWithInstance(id);
+    await this.purchasesService.removeAllWithInstance(id);
     const result = await this.instanceModel.deleteOne({ _id: id }).exec();
     if (result.n === 0) {
       throw new NotFoundException('Could not find instance.');
