@@ -64,12 +64,10 @@ export default function CreateEditInstance({
     resolver: yupResolver(schema),
   });
 
-  console.log('instance', instance);
-
   return (
     <Box borderWidth="1px" borderRadius="lg" p={4}>
       <Heading as="h2" size="md" mb={4}>
-        Lägg till nytt spex
+        {instance ? 'Redigera spex' : 'Lägg till nytt spex'}
       </Heading>
       <Text>Namn</Text>
       <Input mt={4} mb={2} {...register('name')}></Input>

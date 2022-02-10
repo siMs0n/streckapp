@@ -90,3 +90,7 @@ export const addInstance = async (instance: CreateInstanceDto) => {
 export const updateInstance = async (instance: Instance) => {
   return authHttpClient.put(`instances/${instance._id}`, instance);
 };
+
+export const deleteInstance = async (instanceId: string) => {
+  return authHttpClient.delete(`instances/${instanceId}`);
+};
