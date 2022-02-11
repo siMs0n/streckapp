@@ -16,9 +16,12 @@ import CreateEditInstance, {
 } from '../../components/CreateEditInstance';
 import DeletePopover from '../../components/DeletePopover';
 import useCurrentInstance from '../../hooks/useCurrentInstance';
+import { useHistory } from 'react-router-dom';
+import { adminBaseInstanceUrl } from '../../routes/paths';
 
 export default function SettingsPage() {
   const { instance } = useCurrentInstance();
+  const history = useHistory();
 
   const toast = useToast();
 
@@ -50,6 +53,12 @@ export default function SettingsPage() {
     updateInstanceMutation.mutate(instanceToSave);
   };
 
+  const onDeleteInstance = async () => {
+    if (!instance) return;
+    await deleteInstance(instance._id);
+    history.push(adminBaseInstanceUrl);
+  };
+
   if (!instance) {
     return null;
   }
@@ -69,10 +78,7 @@ export default function SettingsPage() {
             <CreateEditInstance instance={instance} onSave={onSaveInstance} />
           </Box>
           <Box mt={{ base: 8, md: 0 }}>
-            <DeletePopover
-              name={instance.name}
-              onDelete={() => deleteInstance(instance._id)}
-            >
+            <DeletePopover name={instance.name} onDelete={onDeleteInstance}>
               <Button colorScheme="red">Ta bort spex</Button>
             </DeletePopover>
           </Box>
