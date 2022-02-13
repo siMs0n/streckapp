@@ -8,10 +8,13 @@ import {
   Purchase,
   CreatePersonDto,
   Instance,
+  CreateProductCategoryDto,
+  ProductCategory,
+  UpdateProductDto,
 } from '../types';
 
 const authHttpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'http://localhost:5000/',
 });
 
 authHttpClient.interceptors.request.use(
@@ -59,12 +62,31 @@ export const addProduct = async (product: CreateProductDto) => {
   return authHttpClient.post(`products`, product);
 };
 
-export const updateProduct = async (product: Product) => {
+export const updateProduct = async (product: UpdateProductDto) => {
   return authHttpClient.put(`products/${product._id}`, product);
 };
 
 export const deleteProduct = async (productId: string) => {
   return authHttpClient.delete(`products/${productId}`);
+};
+
+export const addProductCategory = async (
+  productCategory: CreateProductCategoryDto,
+) => {
+  return authHttpClient.post(`product-categories`, productCategory);
+};
+
+export const updateProductCategory = async (
+  productCategory: ProductCategory,
+) => {
+  return authHttpClient.put(
+    `product-categories/${productCategory._id}`,
+    productCategory,
+  );
+};
+
+export const deleteProductCategory = async (productCategoryId: string) => {
+  return authHttpClient.delete(`product-categories/${productCategoryId}`);
 };
 
 export const getPayments = async (instanceId?: string): Promise<Payment[]> => {

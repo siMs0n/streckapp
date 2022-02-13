@@ -24,14 +24,21 @@ import {
   useDisclosure,
   useToast,
   useBreakpointValue,
+  Select,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import AdminMenu from '../../components/AdminMenu';
-import { CreateProductDto, Product } from '../../types';
+import {
+  CreateProductDto,
+  Product,
+  ProductCategory,
+  UpdateProductDto,
+} from '../../types';
 import { IconButton } from '@chakra-ui/react';
 import DeletePopover from '../../components/DeletePopover';
 import useProducts from '../../hooks/useProducts';
 import AdminInstanceHeader from '../../components/AdminInstanceHeader';
+import useProductCategories from '../../hooks/useProductCategories';
 
 export default function ProductsPage() {
   const [newProduct, setNewProduct] = useState<
@@ -41,6 +48,7 @@ export default function ProductsPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { products, addProduct, updateProduct, deleteProduct } = useProducts();
+  const { productCategories } = useProductCategories();
 
   const onAddProduct = () => {
     if (newProduct.name && newProduct.price && newProduct.price > 0) {
@@ -58,7 +66,7 @@ export default function ProductsPage() {
     }
   };
 
-  const onUpdateProduct = (updatedProduct: Product) => {
+  const onUpdateProduct = (updatedProduct: UpdateProductDto) => {
     updateProduct(updatedProduct);
     onCloseUpdateModal();
   };
@@ -156,6 +164,25 @@ export default function ProductsPage() {
                 })
               }
             ></Input>
+            <Select
+              mb={8}
+              placeholder="Välj kategori"
+              onChange={(e) =>
+                setNewProduct({
+                  ...newProduct,
+                  category: e.target.value,
+                })
+              }
+              value={newProduct?.category || ''}
+            >
+              {productCategories
+                ?.sort((a, b) => a.name.localeCompare(b.name))
+                .map((category) => (
+                  <option value={category._id} key={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+            </Select>
             <Flex mb={8} alignItems="center">
               <Text mr={4}>Tillgänglig</Text>
               <Switch
@@ -182,6 +209,7 @@ export default function ProductsPage() {
       {productToEdit && (
         <EditProductModal
           product={productToEdit}
+          productCategories={productCategories}
           isOpen={isOpen}
           onClose={onCloseUpdateModal}
           onSave={onUpdateProduct}
@@ -193,18 +221,23 @@ export default function ProductsPage() {
 
 type EditProductModalProps = {
   product: Product;
+  productCategories: ProductCategory[];
   isOpen: boolean;
   onClose: () => void;
-  onSave: (product: Product) => void;
+  onSave: (product: UpdateProductDto) => void;
 };
 
 const EditProductModal = ({
   product,
+  productCategories,
   isOpen,
   onClose,
   onSave,
 }: EditProductModalProps) => {
-  const [updatedProduct, setUpdatedProduct] = useState<Product>(product);
+  const [updatedProduct, setUpdatedProduct] = useState<UpdateProductDto>({
+    ...product,
+    category: product.category._id,
+  });
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -231,6 +264,26 @@ const EditProductModal = ({
               })
             }
           ></Input>
+          <Select
+            w={200}
+            maxW="60%"
+            placeholder="Välj kategori"
+            onChange={(e) =>
+              setUpdatedProduct({
+                ...updatedProduct,
+                category: e.target.value,
+              })
+            }
+            value={updatedProduct?.category || ''}
+          >
+            {productCategories
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <option value={category._id} key={category._id}>
+                  {category.name}
+                </option>
+              ))}
+          </Select>
           <Flex mb={8} alignItems="center">
             <Text mr={4}>Tillgänglig</Text>
             <Switch

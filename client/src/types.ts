@@ -2,13 +2,20 @@ export interface Product {
   _id: string;
   name: string;
   price: number;
+  category: ProductCategory;
   available: boolean;
+  instance: string;
 }
 
 export interface Person {
   _id: string;
   name: string;
   balance: number;
+}
+
+export interface ProductCategory {
+  _id: string;
+  name: string;
 }
 
 export interface CreatePersonDto {
@@ -35,6 +42,14 @@ export interface CreateProductDto {
   name: string;
   price: number;
   available: boolean;
+  category: string;
+  instance: string;
+}
+
+export type UpdateProductDto = CreateProductDto & { _id: string };
+
+export interface CreateProductCategoryDto {
+  name: string;
   instance: string;
 }
 

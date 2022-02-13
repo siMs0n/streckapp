@@ -12,6 +12,7 @@ import {
   getAdminPaymentsUrl,
   getAdminPurchasesUrl,
   getAdminSettingsUrl,
+  getAdminProductCategoriesUrl,
 } from '../routes/paths';
 
 export default function AdminMenu() {
@@ -37,6 +38,18 @@ export default function AdminMenu() {
         }
       >
         Användare
+      </Link>
+      <Link
+        as={RouterLink}
+        to={getAdminProductCategoriesUrl(instanceIdString)}
+        fontSize="xl"
+        textDecoration={
+          matchPage(getAdminProductCategoriesUrl(instanceIdString))
+            ? 'underline'
+            : ''
+        }
+      >
+        Produktkategorier
       </Link>
       <Link
         as={RouterLink}

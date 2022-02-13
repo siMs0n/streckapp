@@ -6,14 +6,24 @@ import {
   Product,
   Settings,
   Instance,
+  ProductCategory,
 } from '../types';
 
 const httpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'http://localhost:5000//',
 });
 
 export const getProducts = async (instanceId?: string): Promise<Product[]> => {
   const response = await httpClient.get('products', {
+    params: { ...(instanceId && { instance: instanceId }) },
+  });
+  return response.data;
+};
+
+export const getProductCategories = async (
+  instanceId?: string,
+): Promise<ProductCategory[]> => {
+  const response = await httpClient.get('product-categories', {
     params: { ...(instanceId && { instance: instanceId }) },
   });
   return response.data;

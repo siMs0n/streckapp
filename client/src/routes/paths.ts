@@ -22,6 +22,9 @@ export const getAdminPersonsUrl = (instanceId: string) =>
 export const adminProductsUrl = `${adminInstanceUrl}products`;
 export const getAdminProductsUrl = (instanceId: string) =>
   `${getAdminInstanceUrl(instanceId)}products`;
+export const adminProductCategoriesUrl = `${adminInstanceUrl}product-categories`;
+export const getAdminProductCategoriesUrl = (instanceId: string) =>
+  `${getAdminInstanceUrl(instanceId)}product-categories`;
 export const adminPaymentsUrl = `${adminInstanceUrl}payments`;
 export const getAdminPaymentsUrl = (instanceId: string) =>
   `${getAdminInstanceUrl(instanceId)}payments`;

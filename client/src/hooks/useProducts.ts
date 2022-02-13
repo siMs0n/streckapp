@@ -7,7 +7,7 @@ import {
   updateProduct,
 } from '../api/admin-api-methods';
 import { getProducts } from '../api/api-methods';
-import { CreateProductDto, Product } from '../types';
+import { CreateProductDto, Product, UpdateProductDto } from '../types';
 import useCurrentInstance from './useCurrentInstance';
 
 export default function useProducts() {
@@ -58,7 +58,7 @@ export default function useProducts() {
   );
 
   const handleUpdateProduct = useCallback(
-    (product: Product) => {
+    (product: UpdateProductDto) => {
       updateProductMutation.mutate(product);
     },
     [updateProductMutation],
