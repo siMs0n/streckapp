@@ -4,19 +4,23 @@ import React, { useState } from 'react';
 import { useQueryClient, useMutation } from 'react-query';
 import { makePurchase } from '../../api/api-methods';
 import useCurrentInstance from '../../hooks/useCurrentInstance';
-import { Product } from '../../types';
+import { Product, ProductCategory } from '../../types';
 import NumberInputMobile from '../NumberInputMobile';
+import useProductCategories from '../../hooks/useProductCategories';
+import useProducts from '../../hooks/useProducts';
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
 
 interface ProductsTabProps {
-  products?: Product[];
   selectedPersonId: string;
 }
 
-const ProductsTab = ({ products, selectedPersonId }: ProductsTabProps) => {
+const ProductsTab = ({ selectedPersonId }: ProductsTabProps) => {
   const { instance } = useCurrentInstance();
+  const { products } = useProducts();
+  const { productCategories } = useProductCategories();
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
   const [selectedProduct, setSelectedProduct] = useState<Product>();
   const [quantity, setQuantity] = useState(1);
   const [buttonSuccess, setButtonSuccess] = useState(false);
@@ -31,6 +35,17 @@ const ProductsTab = ({ products, selectedPersonId }: ProductsTabProps) => {
       setTimeout(() => setButtonSuccess(false), 2000);
     },
   });
+
+  const onChangeSelectedCategory = (
+    event: React.ChangeEvent<{ value: unknown }>,
+  ) => {
+    const categoryId = event.target.value as string;
+    const category = productCategories?.find((c) => c._id === categoryId);
+    if (category) {
+      setSelectedCategory(category);
+      setSelectedProduct(undefined);
+    }
+  };
 
   const onChangeSelectedProduct = (
     event: React.ChangeEvent<{ value: unknown }>,
@@ -67,13 +82,31 @@ const ProductsTab = ({ products, selectedPersonId }: ProductsTabProps) => {
     >
       <Box w={300}>
         <Select
-          placeholder="Välj dryck"
+          placeholder="Välj kategori"
+          value={selectedCategory?._id || ''}
+          onChange={onChangeSelectedCategory}
+          textAlign="center"
+          mb={4}
+        >
+          {productCategories
+            ?.sort((a, b) => a.name.localeCompare(b.name))
+            .map((category) => (
+              <option value={category._id} key={category._id}>
+                {category.name}
+              </option>
+            ))}
+        </Select>
+        <Select
+          placeholder={'Välj produkt'}
           value={selectedProduct?._id || ''}
           onChange={onChangeSelectedProduct}
           textAlign="center"
+          disabled={!selectedCategory}
         >
           {products
-            .filter((p) => p.available)
+            .filter(
+              (p) => p.category._id === selectedCategory?._id && p.available,
+            )
             .map((product) => (
               <option value={product._id} key={product._id}>
                 {product.name} ({product.price} kr)

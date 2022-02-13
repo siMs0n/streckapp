@@ -99,13 +99,14 @@ export default function ProductsPage() {
               <Table
                 variant="simple"
                 colorScheme="purple"
-                w={{ base: 'auto', md: '600px' }}
+                w={{ base: 'auto', md: '700px' }}
                 size={tableSize}
               >
                 <Thead>
                   <Tr>
                     <Th>Namn</Th>
                     <Th>Saldo</Th>
+                    <Th>Kategori</Th>
                     <Th>Tillgänglig</Th>
                     <Th>Redigera / Ta bort</Th>
                   </Tr>
@@ -115,6 +116,7 @@ export default function ProductsPage() {
                     <Tr key={product._id}>
                       <Td>{product.name}</Td>
                       <Td>{product.price} kr</Td>
+                      <Td>{product.category.name}</Td>
                       <Td>{product.available ? 'Ja' : 'Nej'}</Td>
                       <Td>
                         <IconButton
@@ -265,8 +267,7 @@ const EditProductModal = ({
             }
           ></Input>
           <Select
-            w={200}
-            maxW="60%"
+            mb={8}
             placeholder="Välj kategori"
             onChange={(e) =>
               setUpdatedProduct({

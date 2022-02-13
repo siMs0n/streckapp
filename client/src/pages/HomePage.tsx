@@ -19,7 +19,6 @@ import SelectPerson from '../components/home/SelectPerson';
 import ProductsTab from '../components/home/ProductsTab';
 import PaymentTab from '../components/home/PaymentTab';
 import usePersons from '../hooks/usePersons';
-import useProducts from '../hooks/useProducts';
 import InstanceHeader from '../components/InstanceHeader';
 
 let loadingTimeout: NodeJS.Timeout;
@@ -32,7 +31,6 @@ export default function HomePage() {
   );
   const [tabIndex, setTabIndex] = useState(0);
 
-  const { products } = useProducts();
   const { persons } = usePersons();
 
   //Show spinner if server is cold starting and takes extra long to load
@@ -116,10 +114,7 @@ export default function HomePage() {
       >
         <TabPanels>
           <TabPanel>
-            <ProductsTab
-              products={products}
-              selectedPersonId={selectedPersonId}
-            />
+            <ProductsTab selectedPersonId={selectedPersonId} />
           </TabPanel>
           <TabPanel>
             <PaymentTab selectedPerson={selectedPerson} />
