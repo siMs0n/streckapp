@@ -10,6 +10,7 @@ import { PurchasesModule } from './purchases/purchases.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { InstancesModule } from './instances/instances.module';
+import { ProductCategoriesModule } from './product-categories/product-categories.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { InstancesModule } from './instances/instances.module';
     PaymentsModule,
     PurchasesModule,
     InstancesModule,
+    ProductCategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -17,12 +17,15 @@ export class ProductsService {
   }
 
   async findAll(instance?: string): Promise<Product[]> {
-    return this.productModel.find(instance ? { instance } : undefined).exec();
+    return this.productModel
+      .find(instance ? { instance } : undefined)
+      .populate('category')
+      .exec();
   }
 
   async findOne(id: string) {
     try {
-      return await this.productModel.findById(id).exec();
+      return await this.productModel.findById(id).populate('category').exec();
     } catch (error) {
       throw new NotFoundException('Could not find product.');
     }
@@ -36,7 +39,7 @@ export class ProductsService {
       if (result.n === 0) {
         throw new NotFoundException('Could not find product to update.');
       }
-      return await this.productModel.findById(id).exec();
+      return await this.productModel.findById(id).populate('category').exec();
     } catch (error) {
       throw new NotFoundException('Could not find product to update.');
     }
