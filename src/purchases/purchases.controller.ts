@@ -7,10 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PurchasesService } from './purchases.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { UpdatePurchaseDto } from './dto/update-purchase.dto';
+import { CreateMultiPurchaseDto } from './dto/create-multi-purchase.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('Purchases')
 export class PurchasesController {
@@ -19,6 +22,12 @@ export class PurchasesController {
   @Post()
   create(@Body() createPurchaseDto: CreatePurchaseDto) {
     return this.purchasesService.create(createPurchaseDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/multi')
+  createMany(@Body() createMultiPurchaseDto: CreateMultiPurchaseDto) {
+    return this.purchasesService.createMany(createMultiPurchaseDto);
   }
 
   @Get()

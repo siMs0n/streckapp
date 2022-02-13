@@ -10,10 +10,11 @@ import {
   CreateProductCategoryDto,
   ProductCategory,
   UpdateProductDto,
+  CreateMultiPurchaseDto,
 } from '../types';
 
 const authHttpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'http://localhost:5000/',
 });
 
 authHttpClient.interceptors.request.use(
@@ -102,6 +103,12 @@ export const getPurchases = async (
     params: { ...(instanceId && { instance: instanceId }) },
   });
   return response.data;
+};
+
+export const makeMultiPurchase = async (
+  multiPurchase: CreateMultiPurchaseDto,
+) => {
+  return authHttpClient.post(`purchases/multi`, multiPurchase);
 };
 
 export const addInstance = async (instance: CreateInstanceDto) => {

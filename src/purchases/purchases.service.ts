@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PersonsService } from 'src/persons/persons.service';
 import { ProductsService } from 'src/products/products.service';
+import { CreateMultiPurchaseDto } from './dto/create-multi-purchase.dto';
 import {
   CreatePopulatedPurchaseDto,
   CreatePurchaseDto,
@@ -38,6 +39,41 @@ export class PurchasesService {
     this.personsService.update(person._id, { balance: newBalance });
 
     return createdPurchase;
+  }
+
+  async createMany(
+    createMultiPurchaseDto: CreateMultiPurchaseDto,
+  ): Promise<Purchase[]> {
+    const persons = await this.personsService.findMany(
+      createMultiPurchaseDto.persons,
+    );
+    const product = await this.productsService.findOne(
+      createMultiPurchaseDto.product,
+    );
+
+    const amount = product.price * createMultiPurchaseDto.quantity;
+
+    const purchases = persons.map((person) => {
+      const createPopulatedPurchaseDto: CreatePopulatedPurchaseDto = {
+        ...createMultiPurchaseDto,
+        unitPrice: product.price,
+        amount: amount,
+        person: person._id,
+      };
+
+      return new this.purchaseModel(createPopulatedPurchaseDto);
+    });
+
+    await this.purchaseModel.insertMany(purchases);
+
+    const updateManyPersonDtos = persons.map((person) => {
+      const newBalance = person.balance - amount;
+
+      return { _id: person._id, balance: newBalance };
+    });
+    this.personsService.updateMany(updateManyPersonDtos);
+
+    return purchases;
   }
 
   async findAll(instance?: string): Promise<Purchase[]> {

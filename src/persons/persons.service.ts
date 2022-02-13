@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { CreatePersonDto } from './dto/create-person.dto';
+import { UpdateManyDto } from './dto/update-many-dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { Person, PersonDocument } from './schemas/person.schema';
 
@@ -17,7 +18,9 @@ export class PersonsService {
   }
 
   async findAll(instance?: string): Promise<Person[]> {
-    return this.personModel.find(instance ? { instance } : undefined).exec();
+    return await this.personModel
+      .find(instance ? { instance } : undefined)
+      .exec();
   }
 
   async findOne(id: string) {
@@ -26,6 +29,10 @@ export class PersonsService {
     } catch (error) {
       throw new NotFoundException('Could not find person.');
     }
+  }
+
+  async findMany(ids: string[]): Promise<PersonDocument[]> {
+    return await this.personModel.find({ _id: { $in: ids } }).exec();
   }
 
   async update(id: string, updatePersonDto: UpdatePersonDto) {
@@ -39,6 +46,20 @@ export class PersonsService {
       return await this.personModel.findById(id).exec();
     } catch (error) {
       throw new NotFoundException('Could not find person to update.');
+    }
+  }
+
+  async updateMany(updateManyPersonsDto: UpdateManyDto[]) {
+    try {
+      const bulkArr = updateManyPersonsDto.map((update) => ({
+        updateOne: {
+          filter: { _id: Types.ObjectId(update._id) },
+          update: { $set: { balance: update.balance } },
+        },
+      }));
+      return await this.personModel.bulkWrite(bulkArr);
+    } catch (error) {
+      throw new NotFoundException('Update many failed');
     }
   }
 

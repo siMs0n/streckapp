@@ -31,6 +31,13 @@ export interface CreatePurchaseDto {
   instance: string;
 }
 
+export interface CreateMultiPurchaseDto {
+  quantity: number;
+  product: string;
+  persons: string[];
+  instance: string;
+}
+
 export interface CreatePaymentDto {
   amount: number;
   reference: string;
