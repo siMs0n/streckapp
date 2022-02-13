@@ -14,12 +14,12 @@ import {
   Tabs,
   Text,
 } from '@chakra-ui/react';
-import usePinAuth from '../hooks/usePinAuth';
-import SelectPerson from '../components/home/SelectPerson';
-import ProductsTab from '../components/home/ProductsTab';
-import PaymentTab from '../components/home/PaymentTab';
-import usePersons from '../hooks/usePersons';
-import InstanceHeader from '../components/InstanceHeader';
+import usePinAuth from '../../hooks/usePinAuth';
+import SelectPerson from './SelectPerson';
+import ProductsTab from './ProductsTab';
+import PaymentTab from './PaymentTab';
+import usePersons from '../../hooks/usePersons';
+import InstanceHeader from '../../components/InstanceHeader';
 
 let loadingTimeout: NodeJS.Timeout;
 

@@ -12,10 +12,10 @@ import {
   Tr,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import AdminMenu from '../../components/AdminMenu';
+import AdminMenu from '../../../components/AdminMenu';
 import dayjs from 'dayjs';
-import usePurchases from '../../hooks/usePurchases';
-import AdminInstanceHeader from '../../components/AdminInstanceHeader';
+import usePurchases from '../../../hooks/usePurchases';
+import AdminInstanceHeader from '../../../components/AdminInstanceHeader';
 
 export default function PurchasesPage() {
   const { purchases } = usePurchases();

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import HomePage from '../pages/HomePage';
+import HomePage from '../pages/HomePage/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import PinPage from '../pages/PinPage';
 import * as paths from './paths';
 import useAdminAuth from '../hooks/useAdminAuth';
 import PersonsPage from '../pages/admin/PersonsPage';
-import ProductsPage from '../pages/admin/ProductsPage';
+import ProductsPage from '../pages/admin/ProductsPage/ProductsPage';
 import PaymentsPage from '../pages/admin/PaymentsPage';
-import PurchasesPage from '../pages/admin/PurchasesPage';
+import PurchasesPage from '../pages/admin/PurchasesPage/PurchasesPage';
 import SettingsPage from '../pages/admin/SettingsPage';
 import InstancesPage from '../pages/InstancesPage';
 import AdminInstancesPage from '../pages/admin/AdminInstancesPage';

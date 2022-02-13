@@ -5,7 +5,7 @@ import { useQueryClient, useMutation } from 'react-query';
 import { makePurchase } from '../../api/api-methods';
 import useCurrentInstance from '../../hooks/useCurrentInstance';
 import { Product, ProductCategory } from '../../types';
-import NumberInputMobile from '../NumberInputMobile';
+import NumberInputMobile from '../../components/NumberInputMobile';
 import useProductCategories from '../../hooks/useProductCategories';
 import useProducts from '../../hooks/useProducts';
 
