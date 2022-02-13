@@ -7,7 +7,7 @@ import {
   updateProduct,
 } from '../api/admin-api-methods';
 import { getProducts } from '../api/api-methods';
-import { CreateProductDto, Product, UpdateProductDto } from '../types';
+import { CreateProductDto, UpdateProductDto } from '../types';
 import useCurrentInstance from './useCurrentInstance';
 
 export default function useProducts() {
