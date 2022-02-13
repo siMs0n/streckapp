@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 const authHttpClient = axios.create({
-  baseURL: 'http://localhost:5000/',
+  baseURL: 'https://streckapp.herokuapp.com/',
 });
 
 authHttpClient.interceptors.request.use(
