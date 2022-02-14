@@ -1,39 +1,22 @@
-import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Box,
-  Button,
   Container,
   Flex,
   Heading,
-  Input,
-  Switch,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
-  Text,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   useDisclosure,
   useToast,
   useBreakpointValue,
-  Select,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AdminMenu from '../../../components/AdminMenu';
-import {
-  CreateProductDto,
-  Product,
-  ProductCategory,
-  UpdateProductDto,
-} from '../../../types';
+import { CreateProductDto, Product, UpdateProductDto } from '../../../types';
 import { IconButton } from '@chakra-ui/react';
 import DeletePopover from '../../../components/DeletePopover';
 import useProducts from '../../../hooks/useProducts';

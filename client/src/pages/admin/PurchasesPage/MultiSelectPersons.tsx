@@ -1,7 +1,7 @@
-import { Checkbox, Grid, GridItem, Stack } from '@chakra-ui/react';
+import { Checkbox, Grid, GridItem } from '@chakra-ui/react';
 import { Person } from '../../../types';
 
-interface MultiSelectPersons {
+interface MultiSelectPersonsProps {
   persons: Person[];
   selectedIds: string[];
   setSelectedIds: (ids: string[]) => void;
@@ -11,7 +11,7 @@ const MultiSelectPersons = ({
   persons,
   selectedIds,
   setSelectedIds,
-}: MultiSelectPersons) => {
+}: MultiSelectPersonsProps) => {
   const allChecked = selectedIds.length === persons.length;
   const isIndeterminate = selectedIds.length > 0 && !allChecked;
 
