@@ -162,9 +162,7 @@ const AddPurchase = ({
         disabled={!selectedCategory}
       >
         {products
-          .filter(
-            (p) => p.category._id === selectedCategory?._id && p.available,
-          )
+          .filter((p) => p.category._id === selectedCategory?._id)
           .map((product) => (
             <option value={product._id} key={product._id}>
               {product.name} ({product.price} kr)

@@ -8,6 +8,7 @@ import { Product, ProductCategory } from '../../types';
 import NumberInputMobile from '../../components/NumberInputMobile';
 import useProductCategories from '../../hooks/useProductCategories';
 import useProducts from '../../hooks/useProducts';
+import { useEffect } from 'react';
 
 const MotionBox = motion(Box);
 const MotionButton = motion(Button);
@@ -24,6 +25,12 @@ const ProductsTab = ({ selectedPersonId }: ProductsTabProps) => {
   const [selectedProduct, setSelectedProduct] = useState<Product>();
   const [quantity, setQuantity] = useState(1);
   const [buttonSuccess, setButtonSuccess] = useState(false);
+
+  useEffect(() => {
+    if (productCategories.length === 1) {
+      setSelectedCategory(productCategories[0]);
+    }
+  }, [productCategories]);
 
   const queryClient = useQueryClient();
   const purchaseMutation = useMutation(makePurchase, {
@@ -81,21 +88,23 @@ const ProductsTab = ({ selectedPersonId }: ProductsTabProps) => {
       transition={{ duration: 0.8, type: 'spring', bounce: 0.3 }}
     >
       <Box w={300}>
-        <Select
-          placeholder="Välj kategori"
-          value={selectedCategory?._id || ''}
-          onChange={onChangeSelectedCategory}
-          textAlign="center"
-          mb={4}
-        >
-          {productCategories
-            ?.sort((a, b) => a.name.localeCompare(b.name))
-            .map((category) => (
-              <option value={category._id} key={category._id}>
-                {category.name}
-              </option>
-            ))}
-        </Select>
+        {productCategories.length > 1 && (
+          <Select
+            placeholder="Välj kategori"
+            value={selectedCategory?._id || ''}
+            onChange={onChangeSelectedCategory}
+            textAlign="center"
+            mb={4}
+          >
+            {productCategories
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <option value={category._id} key={category._id}>
+                  {category.name}
+                </option>
+              ))}
+          </Select>
+        )}
         <Select
           placeholder={'Välj produkt'}
           value={selectedProduct?._id || ''}
