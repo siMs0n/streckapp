@@ -89,18 +89,24 @@ export const deleteProductCategory = async (productCategoryId: string) => {
   return authHttpClient.delete(`product-categories/${productCategoryId}`);
 };
 
-export const getPayments = async (instanceId?: string): Promise<Payment[]> => {
+export const getPayments = async (
+  instanceId?: string,
+  limit = 100,
+  page = 1,
+): Promise<Payment[]> => {
   const response = await authHttpClient.get('payments', {
-    params: { ...(instanceId && { instance: instanceId }) },
+    params: { ...(instanceId && { instance: instanceId }), limit, page },
   });
   return response.data;
 };
 
 export const getPurchases = async (
   instanceId?: string,
-): Promise<Purchase[]> => {
+  limit = 100,
+  page = 1,
+): Promise<{ total: number; purchases: Purchase[] }> => {
   const response = await authHttpClient.get('purchases', {
-    params: { ...(instanceId && { instance: instanceId }) },
+    params: { ...(instanceId && { instance: instanceId }), limit, page },
   });
   return response.data;
 };

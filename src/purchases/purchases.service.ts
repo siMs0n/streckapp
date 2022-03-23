@@ -76,14 +76,23 @@ export class PurchasesService {
     return purchases;
   }
 
-  async findAll(instance?: string, limit = 100, page = 1): Promise<Purchase[]> {
-    return this.purchaseModel
+  async findAll(
+    instance?: string,
+    limit = 100,
+    page = 1,
+  ): Promise<{ total: number; purchases: Purchase[] }> {
+    const purchases = await this.purchaseModel
       .find({ instance })
       .sort({ createdAt: 'desc' })
       .limit(limit)
       .skip((page - 1) * limit)
       .populate('person product')
       .exec();
+
+    const total = await this.purchaseModel.estimatedDocumentCount({
+      arrayFilters: [{ instance }],
+    });
+    return { total, purchases };
   }
 
   async findOne(id: string) {

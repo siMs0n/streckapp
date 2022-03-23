@@ -1,19 +1,7 @@
-import React from 'react';
-import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  useBreakpointValue,
-  useToast,
-} from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, useToast } from '@chakra-ui/react';
+import { Column } from 'react-table';
 import AdminMenu from '../../../components/AdminMenu';
+import PaginatedTable from '../../../components/PaginatedTable';
 import dayjs from 'dayjs';
 import usePurchases from '../../../hooks/usePurchases';
 import AdminInstanceHeader from '../../../components/AdminInstanceHeader';
@@ -21,7 +9,7 @@ import useProductCategories from '../../../hooks/useProductCategories';
 import usePersons from '../../../hooks/usePersons';
 import useProducts from '../../../hooks/useProducts';
 import AddPurchase from './AddPurchase';
-import { Person, Product } from '../../../types';
+import { Person, Product, Purchase } from '../../../types';
 import { useQueryClient, useMutation } from 'react-query';
 import { makePurchase } from '../../../api/api-methods';
 import useCurrentInstance from '../../../hooks/useCurrentInstance';
@@ -31,12 +19,11 @@ import {
 } from '../../../api/admin-api-methods';
 
 export default function PurchasesPage() {
-  const { purchases } = usePurchases();
+  const { purchases, limit, setLimit, page, setPage, total } = usePurchases();
   const { instance } = useCurrentInstance();
   const { persons } = usePersons();
   const { products } = useProducts();
   const { productCategories } = useProductCategories();
-  const tableSize = useBreakpointValue({ base: 'sm', md: 'md' });
   const toast = useToast();
 
   const queryClient = useQueryClient();
@@ -156,39 +143,15 @@ export default function PurchasesPage() {
               p={{ base: 1, md: 4 }}
               overflowX="scroll"
             >
-              <Table
-                variant="simple"
-                colorScheme="purple"
-                w={{ base: 'auto', md: '700px' }}
-                size={tableSize}
-              >
-                <Thead>
-                  <Tr>
-                    <Th>Tid</Th>
-                    <Th>Användare</Th>
-                    <Th>Produkt</Th>
-                    <Th>Antal</Th>
-                    <Th>Summa</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {purchases
-                    ?.sort((a, b) =>
-                      dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1,
-                    )
-                    .map((purchase) => (
-                      <Tr key={purchase._id}>
-                        <Td>
-                          {dayjs(purchase.createdAt).format('YYYY-MM-DD HH:mm')}
-                        </Td>
-                        <Td>{purchase?.person?.name || 'Borttagen'}</Td>
-                        <Td>{purchase?.product?.name || 'Borttagen'}</Td>
-                        <Td>{purchase.quantity}</Td>
-                        <Td>{purchase.amount} kr</Td>
-                      </Tr>
-                    ))}
-                </Tbody>
-              </Table>
+              <PaginatedTable<Purchase>
+                columns={tableColumns}
+                data={purchases}
+                totalCount={total}
+                queryLimit={limit}
+                queryPage={page}
+                setQueryLimit={(l) => setLimit(l)}
+                setQueryPage={(p) => setPage(p)}
+              />
             </Box>
           </Box>
           <AddPurchase
@@ -203,3 +166,29 @@ export default function PurchasesPage() {
     </Container>
   );
 }
+
+const tableColumns: Column<Purchase>[] = [
+  {
+    Header: 'Tid',
+    accessor: 'createdAt',
+    Cell: ({ value }: { value: string }) =>
+      dayjs(value).format('YYYY-MM-DD HH:mm'),
+  },
+  {
+    Header: 'Användare',
+    accessor: (row: Purchase) => row?.person?.name || 'Borttagen',
+  },
+  {
+    Header: 'Produkt',
+    accessor: (row: Purchase) => row?.product?.name || 'Borttagen',
+  },
+  {
+    Header: 'Antal',
+    accessor: 'quantity',
+  },
+  {
+    Header: 'Summa',
+    accessor: 'amount',
+    Cell: ({ value }: { value: string }) => `${value} kr`,
+  },
+];

@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getPurchases } from '../api/admin-api-methods';
 import useCurrentInstance from './useCurrentInstance';
 
 export default function usePurchases() {
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
   const { instance } = useCurrentInstance();
   const { data } = useQuery(
-    ['purchases', instance?._id],
-    () => getPurchases(instance?._id),
+    ['purchases', instance?._id, page],
+    () => getPurchases(instance?._id, limit, page),
     {
       enabled: !!instance?._id,
+      keepPreviousData: true,
     },
   );
   /* const addPurchaseMutation = useMutation(addPurchase, {
@@ -62,7 +66,12 @@ export default function usePurchases() {
   ); */
 
   return {
-    purchases: data,
+    purchases: data?.purchases || [],
+    total: data?.total || 0,
+    limit,
+    setLimit,
+    page,
+    setPage,
     /* addPurchase: handleAddPurchase,
     updatePurchase: handleUpdatePurchase,
     deletePurchase: handleDeletePurchase, */
