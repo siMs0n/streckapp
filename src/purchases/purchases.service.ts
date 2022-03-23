@@ -76,9 +76,12 @@ export class PurchasesService {
     return purchases;
   }
 
-  async findAll(instance?: string): Promise<Purchase[]> {
+  async findAll(instance?: string, limit = 100, page = 1): Promise<Purchase[]> {
     return this.purchaseModel
       .find({ instance })
+      .sort({ createdAt: 'desc' })
+      .limit(limit)
+      .skip((page - 1) * limit)
       .populate('person product')
       .exec();
   }

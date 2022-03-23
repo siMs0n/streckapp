@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
@@ -25,8 +26,12 @@ export class PaymentsController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Query('instance') instance: string) {
-    return this.paymentsService.findAll(instance);
+  findAll(
+    @Query('instance') instance: string,
+    @Query('limit', ParseIntPipe) limit: number,
+    @Query('page', ParseIntPipe) page: number,
+  ) {
+    return this.paymentsService.findAll(instance, limit, page);
   }
 
   @Get(':id')

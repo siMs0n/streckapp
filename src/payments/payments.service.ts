@@ -24,9 +24,12 @@ export class PaymentsService {
     return createdPayment;
   }
 
-  async findAll(instance?: string): Promise<Payment[]> {
+  async findAll(instance?: string, limit = 100, page = 1): Promise<Payment[]> {
     return this.paymentModel
       .find(instance ? { instance } : undefined)
+      .sort({ createdAt: 'desc' })
+      .limit(limit)
+      .skip((page - 1) * limit)
       .populate('person')
       .exec();
   }
