@@ -24,14 +24,24 @@ export class PaymentsService {
     return createdPayment;
   }
 
-  async findAll(instance?: string, limit = 100, page = 1): Promise<Payment[]> {
-    return this.paymentModel
+  async findAll(
+    instance?: string,
+    limit = 100,
+    page = 1,
+  ): Promise<{ total: number; payments: Payment[] }> {
+    const payments = await this.paymentModel
       .find(instance ? { instance } : undefined)
       .sort({ createdAt: 'desc' })
       .limit(limit)
       .skip((page - 1) * limit)
       .populate('person')
       .exec();
+
+    const total = await this.paymentModel.estimatedDocumentCount({
+      arrayFilters: [{ instance }],
+    });
+
+    return { total, payments };
   }
 
   async findOne(id: string) {

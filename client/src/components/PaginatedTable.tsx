@@ -47,6 +47,7 @@ const PaginatedTable = <T extends object>({
   setQueryLimit,
 }: IPaginatedTableProps<T>) => {
   const tableSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const {
     getTableProps,
@@ -115,7 +116,12 @@ const PaginatedTable = <T extends object>({
           })}
         </Tbody>
       </Table>
-      <Flex justifyContent="space-between" m={4} alignItems="center">
+      <Flex
+        justifyContent="space-between"
+        m={4}
+        alignItems="center"
+        wrap="wrap"
+      >
         <Flex>
           <Tooltip label="Första sidan">
             <IconButton
@@ -136,8 +142,8 @@ const PaginatedTable = <T extends object>({
           </Tooltip>
         </Flex>
 
-        <Flex alignItems="center">
-          <Text flexShrink={0} mr={8}>
+        <Flex alignItems="center" wrap="wrap">
+          <Text flexShrink={0} mr={isMobile ? 0 : 8}>
             Sida{' '}
             <Text fontWeight="bold" as="span">
               {pageIndex + 1}
@@ -147,38 +153,42 @@ const PaginatedTable = <T extends object>({
               {pageOptions.length}
             </Text>
           </Text>
-          <Text flexShrink={0}>Gå till sida:</Text>{' '}
-          <NumberInput
-            ml={2}
-            mr={8}
-            w={28}
-            min={1}
-            max={pageOptions.length}
-            onChange={(value) => {
-              const page = value ? parseInt(value) - 1 : 0;
-              gotoPage(page);
-            }}
-            defaultValue={pageIndex + 1}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-          <Select
-            w={32}
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-            }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Visa {pageSize}
-              </option>
-            ))}
-          </Select>
+          {!isMobile && (
+            <>
+              <Text flexShrink={0}>Gå till sida:</Text>{' '}
+              <NumberInput
+                ml={2}
+                mr={8}
+                w={28}
+                min={1}
+                max={pageOptions.length}
+                onChange={(value) => {
+                  const page = value ? parseInt(value) - 1 : 0;
+                  gotoPage(page);
+                }}
+                defaultValue={pageIndex + 1}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+              <Select
+                w={32}
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                }}
+              >
+                {[10, 20, 30, 40, 50].map((pageSize) => (
+                  <option key={pageSize} value={pageSize}>
+                    Visa {pageSize}
+                  </option>
+                ))}
+              </Select>
+            </>
+          )}
         </Flex>
 
         <Flex>

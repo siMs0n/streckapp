@@ -93,7 +93,7 @@ export const getPayments = async (
   instanceId?: string,
   limit = 100,
   page = 1,
-): Promise<Payment[]> => {
+): Promise<{ total: number; payments: Payment[] }> => {
   const response = await authHttpClient.get('payments', {
     params: { ...(instanceId && { instance: instanceId }), limit, page },
   });

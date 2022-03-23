@@ -141,7 +141,7 @@ export default function PurchasesPage() {
               borderWidth="1px"
               borderRadius="lg"
               p={{ base: 1, md: 4 }}
-              overflowX="scroll"
+              overflowX="auto"
             >
               <PaginatedTable<Purchase>
                 columns={tableColumns}

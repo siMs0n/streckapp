@@ -1,26 +1,14 @@
-import React from 'react';
-import {
-  Box,
-  Container,
-  Flex,
-  Heading,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Box, Container, Flex, Heading } from '@chakra-ui/react';
 import AdminMenu from '../../components/AdminMenu';
+import PaginatedTable from '../../components/PaginatedTable';
 import dayjs from 'dayjs';
 import usePayments from '../../hooks/usePayments';
 import AdminInstanceHeader from '../../components/AdminInstanceHeader';
+import { Payment } from '../../types';
+import { Column } from 'react-table';
 
 export default function PaymentsPage() {
-  const { payments } = usePayments();
-
-  const tableSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const { payments, limit, setLimit, page, setPage, total } = usePayments();
 
   return (
     <Container pt={{ base: 2, md: '50px' }} pl={{ base: 2, md: 8 }} maxW={1600}>
@@ -38,39 +26,17 @@ export default function PaymentsPage() {
               borderWidth="1px"
               borderRadius="lg"
               p={{ base: 1, md: 4 }}
-              overflowX="scroll"
+              overflowX="auto"
             >
-              <Table
-                variant="simple"
-                colorScheme="purple"
-                w={{ base: 'auto', md: '600px' }}
-                size={tableSize}
-              >
-                <Thead>
-                  <Tr>
-                    <Th>Tid</Th>
-                    <Th>Användare</Th>
-                    <Th>Summa</Th>
-                    <Th>Referens</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {payments
-                    ?.sort((a, b) =>
-                      dayjs(a.createdAt).isBefore(dayjs(b.createdAt)) ? 1 : -1,
-                    )
-                    .map((payment) => (
-                      <Tr key={payment._id}>
-                        <Td>
-                          {dayjs(payment.createdAt).format('YYYY-MM-DD HH:mm')}
-                        </Td>
-                        <Td>{payment?.person?.name || 'Borttagen'}</Td>
-                        <Td>{payment.amount} kr</Td>
-                        <Td>{payment.reference}</Td>
-                      </Tr>
-                    ))}
-                </Tbody>
-              </Table>
+              <PaginatedTable<Payment>
+                columns={tableColumns}
+                data={payments}
+                totalCount={total}
+                queryLimit={limit}
+                queryPage={page}
+                setQueryLimit={(l) => setLimit(l)}
+                setQueryPage={(p) => setPage(p)}
+              />
             </Box>
           </Box>
         </Flex>
@@ -78,3 +44,25 @@ export default function PaymentsPage() {
     </Container>
   );
 }
+
+const tableColumns: Column<Payment>[] = [
+  {
+    Header: 'Tid',
+    accessor: 'createdAt',
+    Cell: ({ value }: { value: string }) =>
+      dayjs(value).format('YYYY-MM-DD HH:mm'),
+  },
+  {
+    Header: 'Användare',
+    accessor: (row: Payment) => row?.person?.name || 'Borttagen',
+  },
+  {
+    Header: 'Summa',
+    accessor: 'amount',
+    Cell: ({ value }: { value: string }) => `${value} kr`,
+  },
+  {
+    Header: 'Referens',
+    accessor: 'reference',
+  },
+];

@@ -77,7 +77,7 @@ export default function ProductsPage() {
               borderWidth="1px"
               borderRadius="lg"
               p={{ base: 1, md: 4 }}
-              overflowX="scroll"
+              overflowX="auto"
             >
               <Table
                 variant="simple"

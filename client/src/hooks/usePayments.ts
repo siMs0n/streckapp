@@ -1,14 +1,18 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getPayments } from '../api/admin-api-methods';
 import useCurrentInstance from './useCurrentInstance';
 
 export default function usePayments() {
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
   const { instance } = useCurrentInstance();
   const { data } = useQuery(
-    ['payments', instance?._id],
-    () => getPayments(instance?._id),
+    ['payments', instance?._id, page],
+    () => getPayments(instance?._id, limit, page),
     {
       enabled: !!instance?._id,
+      keepPreviousData: true,
     },
   );
   /* const addPaymentMutation = useMutation(addPayment, {
@@ -62,7 +66,12 @@ export default function usePayments() {
   ); */
 
   return {
-    payments: data,
+    payments: data?.payments || [],
+    total: data?.total || 0,
+    limit,
+    setLimit,
+    page,
+    setPage,
     /* addPayment: handleAddPayment,
     updatePayment: handleUpdatePayment,
     deletePayment: handleDeletePayment, */
