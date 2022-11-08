@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 const authHttpClient = axios.create({
-  baseURL: 'https://streckapp.herokuapp.com/',
+  baseURL: 'https://streckapp.onrender.com',
 });
 
 authHttpClient.interceptors.request.use(

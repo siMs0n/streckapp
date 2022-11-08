@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Container,
@@ -6,7 +6,6 @@ import {
   Heading,
   Select,
   Spacer,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -20,12 +19,11 @@ import ProductsTab from './ProductsTab';
 import PaymentTab from './PaymentTab';
 import usePersons from '../../hooks/usePersons';
 import InstanceHeader from '../../components/InstanceHeader';
-
-let loadingTimeout: NodeJS.Timeout;
+import { FetchingDataSpinner } from '../../components/FetchingDataSpinner';
+import { useShowSpinner } from '../../hooks/useShowSpinner';
 
 export default function HomePage() {
   const { isLoading: authIsLoading } = usePinAuth();
-  const [showSpinner, setShowSpinner] = useState(false);
   const [selectedPersonId, setSelectedPersonId] = useState<string>(
     localStorage.getItem('selectedPersonId') || '',
   );
@@ -33,19 +31,7 @@ export default function HomePage() {
 
   const { persons } = usePersons();
 
-  //Show spinner if server is cold starting and takes extra long to load
-  useEffect(() => {
-    if (!persons) {
-      loadingTimeout = setTimeout(() => {
-        if (!persons) {
-          setShowSpinner(true);
-        }
-      }, 1000);
-    } else if (persons) {
-      clearTimeout(loadingTimeout);
-      setShowSpinner(false);
-    }
-  }, [persons, showSpinner]);
+  const showSpinner = useShowSpinner(!!persons);
 
   const onChangeSelectedPerson = (personId: string) => {
     setSelectedPersonId(personId);
@@ -58,14 +44,7 @@ export default function HomePage() {
   );
 
   if (showSpinner || authIsLoading) {
-    return (
-      <Container centerContent>
-        <Flex flexDirection="column" alignItems="center" mt={8}>
-          <Text>Hämtar data...</Text>
-          <Spinner mt={8} size="xl" />
-        </Flex>
-      </Container>
-    );
+    return <FetchingDataSpinner />;
   }
 
   if (!selectedPerson) {

@@ -4,11 +4,14 @@ import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { getInstances } from '../api/api-methods';
 import { getInstanceUrl, getPinUrl, loginUrl } from '../routes/paths';
 import { Instance } from '../types';
+import { useShowSpinner } from '../hooks/useShowSpinner';
+import { FetchingDataSpinner } from '../components/FetchingDataSpinner';
 
 export default function InstancesPage() {
   const { data: instances } = useQuery('instances', getInstances, {
     retry: false,
   });
+  const showSpinner = useShowSpinner(!!instances);
   const history = useHistory();
 
   const onSelectInstance = (instance: Instance) => {
@@ -19,6 +22,11 @@ export default function InstancesPage() {
       history.push(getInstanceUrl(instance._id));
     }
   };
+
+  //Show spinner if server is cold starting and takes extra long to load
+  if (showSpinner) {
+    return <FetchingDataSpinner />;
+  }
 
   return (
     <Container
