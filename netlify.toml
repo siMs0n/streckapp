@@ -1,6 +1,7 @@
 [build]
-base = "client"
-publish = "build"
-command = "yarn build"
+  base = "/"
+  publish = "build"
+  command = "yarn build"
+
 [functions]
-  directory = "netlify/functions"
+  directory = "netlify/functions/"
