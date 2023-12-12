@@ -2,3 +2,4 @@
 base = "client"
 publish = "build"
 command = "yarn build"
+functions = "functions"
