@@ -111,7 +111,7 @@ export class PurchasesService {
       const result = await this.purchaseModel
         .updateOne({ _id: id }, updatePurchaseDto)
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException('Could not find purchase to update.');
       }
       return await this.purchaseModel.findById(id).exec();
@@ -122,7 +122,7 @@ export class PurchasesService {
 
   async remove(id: string) {
     const result = await this.purchaseModel.deleteOne({ _id: id }).exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find purchase.');
     }
     return 'Purchase was deleted';

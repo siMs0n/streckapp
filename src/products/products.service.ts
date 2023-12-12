@@ -36,7 +36,7 @@ export class ProductsService {
       const result = await this.productModel
         .updateOne({ _id: id }, updateProductDto)
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException('Could not find product to update.');
       }
       return await this.productModel.findById(id).populate('category').exec();
@@ -47,7 +47,7 @@ export class ProductsService {
 
   async remove(id: string) {
     const result = await this.productModel.deleteOne({ _id: id }).exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find product.');
     }
     return 'Product was deleted';

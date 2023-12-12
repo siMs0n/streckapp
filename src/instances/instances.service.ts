@@ -44,7 +44,7 @@ export class InstancesService {
           { ...updateInstanceDto, pin: updateInstanceDto.pin },
         )
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException('Could not find instance to update.');
       }
       return await this.instanceModel.findById(id).exec();
@@ -60,7 +60,7 @@ export class InstancesService {
     await this.productsService.removeAllWithInstance(id);
     await this.purchasesService.removeAllWithInstance(id);
     const result = await this.instanceModel.deleteOne({ _id: id }).exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find instance.');
     }
     return 'Instance was deleted';

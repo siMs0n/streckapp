@@ -57,7 +57,7 @@ export class PaymentsService {
       const result = await this.paymentModel
         .updateOne({ _id: id }, updatePaymentDto)
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException('Could not find payment to update.');
       }
       return await this.paymentModel.findById(id).exec();
@@ -68,7 +68,7 @@ export class PaymentsService {
 
   async remove(id: string) {
     const result = await this.paymentModel.deleteOne({ _id: id }).exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find payment.');
     }
     return 'Payment was deleted';

@@ -40,7 +40,7 @@ export class PersonsService {
       const result = await this.personModel
         .updateOne({ _id: id }, updatePersonDto)
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException('Could not find person to update.');
       }
       return await this.personModel.findById(id).exec();
@@ -53,7 +53,7 @@ export class PersonsService {
     try {
       const bulkArr = updateManyPersonsDto.map((update) => ({
         updateOne: {
-          filter: { _id: Types.ObjectId(update._id) },
+          filter: { _id: new Types.ObjectId(update._id) },
           update: { $set: { balance: update.balance } },
         },
       }));
@@ -65,7 +65,7 @@ export class PersonsService {
 
   async remove(id: string) {
     const result = await this.personModel.deleteOne({ _id: id }).exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find person.');
     }
     return 'Person was deleted';

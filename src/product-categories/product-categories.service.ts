@@ -43,7 +43,7 @@ export class ProductCategoriesService {
       const result = await this.productCategoryModel
         .updateOne({ _id: id }, updateProductCategoryDto)
         .exec();
-      if (result.n === 0) {
+      if (result.modifiedCount === 0) {
         throw new NotFoundException(
           'Could not find product category to update.',
         );
@@ -58,7 +58,7 @@ export class ProductCategoriesService {
     const result = await this.productCategoryModel
       .deleteOne({ _id: id })
       .exec();
-    if (result.n === 0) {
+    if (result.deletedCount === 0) {
       throw new NotFoundException('Could not find product category.');
     }
     return 'Product category was deleted';
