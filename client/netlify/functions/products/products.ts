@@ -1,6 +1,6 @@
 import { connect } from '../../model/mongoose';
 import type { Handler, HandlerEvent } from '@netlify/functions';
-import { Product } from 'client/netlify/model/models';
+import { Product } from '../../model/models';
 
 export const handler: Handler = async (event) => {
   try {
