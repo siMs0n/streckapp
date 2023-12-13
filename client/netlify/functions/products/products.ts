@@ -4,11 +4,15 @@ import { productModelName } from '../../model/models';
 import mongoose from 'mongoose';
 
 export const handler: Handler = async (event) => {
+  const instance = event?.queryStringParameters?.instance;
+  console.log(event.path);
   try {
     await connect();
 
     const Product = mongoose.model(productModelName);
-    const results = await Product.find({}).populate('category').exec();
+    const results = await Product.find(instance ? { instance } : {})
+      .populate('category')
+      .exec();
 
     return {
       statusCode: 200,
