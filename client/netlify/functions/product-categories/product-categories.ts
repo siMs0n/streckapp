@@ -1,14 +1,17 @@
 import type { Handler } from '@netlify/functions';
-import { getIdFromPath, getCorsHeaders } from '../../utils';
-import { getProductById, getProducts } from './products.service';
+import { getCorsHeaders, getIdFromPath } from '../../utils';
+import {
+  getProductCategoryById,
+  getProductCategorys,
+} from './product-categories.service';
 
 export const handler: Handler = async (event) => {
   const instance = event?.queryStringParameters?.instance;
-  const productId = getIdFromPath(event.path, 'products');
+  const productCategoryId = getIdFromPath(event.path, 'product-categories');
   try {
-    const results = productId
-      ? await getProductById(productId, instance)
-      : await getProducts(instance);
+    const results = productCategoryId
+      ? await getProductCategoryById(productCategoryId, instance)
+      : await getProductCategorys(instance);
 
     return {
       statusCode: 200,

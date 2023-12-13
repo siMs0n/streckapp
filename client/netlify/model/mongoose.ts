@@ -1,13 +1,3 @@
-import {
-  IInstance,
-  instanceModelName,
-  instanceSchema,
-  productCategoryModelName,
-  productCategorySchema,
-  productModelName,
-  productSchema,
-} from './models';
-
 import mongoose from 'mongoose';
 
 let conn = null;
@@ -23,9 +13,9 @@ export const connect = async function () {
     // `await`ing connection after assigning to the `conn` variable
     // to avoid multiple function calls creating new connections
     await conn;
-    mongoose.model(instanceModelName, instanceSchema);
+    /* mongoose.model(instanceModelName, instanceSchema);
     mongoose.model(productCategoryModelName, productCategorySchema);
-    mongoose.model(productModelName, productSchema);
+    mongoose.model(productModelName, productSchema); */
   }
 
   return conn;
