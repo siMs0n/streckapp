@@ -189,6 +189,6 @@ const tableColumns: Column<Purchase>[] = [
   {
     Header: 'Summa',
     accessor: 'amount',
-    Cell: ({ value }: { value: string }) => `${value} kr`,
+    Cell: ({ value }) => `${value} kr`,
   },
 ];

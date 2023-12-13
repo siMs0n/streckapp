@@ -59,7 +59,7 @@ const tableColumns: Column<Payment>[] = [
   {
     Header: 'Summa',
     accessor: 'amount',
-    Cell: ({ value }: { value: string }) => `${value} kr`,
+    Cell: ({ value }) => `${value} kr`,
   },
   {
     Header: 'Referens',
