@@ -11,14 +11,8 @@ export default async () => {
 
     const results = await products.find({}).toArray();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(results),
-    };
+    return Response.json(results);
   } catch (error) {
-    return {
-      statusCode: 200,
-      body: error.toString(),
-    };
+    return new Response(error.toString(), { status: 500 });
   }
 };
