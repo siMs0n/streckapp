@@ -8,8 +8,8 @@ export const handler: Handler = async (event) => {
   const productId = getIdFromPath(event.path, 'products');
   try {
     const results = productId
-      ? getProductById(productId, instance)
-      : getProducts(instance);
+      ? await getProductById(productId, instance)
+      : await getProducts(instance);
 
     return {
       statusCode: 200,
@@ -49,7 +49,7 @@ const getProductById = async (id: string, instance?: string) => {
 
 const getIdFromPath = (path: string, resource: string): string | undefined => {
   const parts = path.split(`${resource}/`);
-  if (parts.length === 2) return parts[1];
+  if (parts.length === 2 && parts[1] !== '') return parts[1];
 };
 
 const getHeaders = (event: HandlerEvent) => {
