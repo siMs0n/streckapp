@@ -17,24 +17,12 @@ import ProductCategoriesPage from '../pages/admin/ProductCategoriesPage';
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path={paths.baseUrl}>
-        <InstancesPage />
-      </Route>
-      <Route path={paths.baseInstanceUrl}>
-        <InstancesPage />
-      </Route>
-      <Route path={paths.instanceUrl}>
-        <InstanceRoutes />
-      </Route>
-      <Route path={paths.loginUrl}>
-        <LoginPage />
-      </Route>
-      <Route path={paths.adminBaseUrl}>
-        <AdminRoutes />
-      </Route>
-      <Route path="*">
-        <NotFoundPage />
-      </Route>
+      <Route path={paths.baseUrl} element={<InstancesPage />} />
+      <Route path={paths.baseInstanceUrl} element={<InstancesPage />} />
+      <Route path={`${paths.instanceUrl}*`} element={<InstanceRoutes />} />
+      <Route path={paths.loginUrl} element={<LoginPage />} />
+      <Route path={`${paths.adminBaseUrl}*`} element={<AdminRoutes />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
@@ -42,15 +30,9 @@ export default function AppRoutes() {
 const InstanceRoutes = () => {
   return (
     <Routes>
-      <Route path={paths.instanceUrl}>
-        <Navigate to={paths.homeUrl} replace />
-      </Route>
-      <Route path={paths.homeUrl}>
-        <HomePage />
-      </Route>
-      <Route path={paths.pinUrl}>
-        <PinPage />
-      </Route>
+      <Route path="/" element={<Navigate to="home" replace />} />
+      <Route path="home" element={<HomePage />} />
+      <Route path="pin" element={<PinPage />} />
     </Routes>
   );
 };
@@ -59,16 +41,13 @@ const AdminRoutes = () => {
   useAdminAuth();
   return (
     <Routes>
-      <Route path={paths.adminBaseUrl}>
-        <Navigate to={paths.adminBaseInstanceUrl} replace />
-      </Route>
+      <Route path="/" element={<Navigate to="instance" replace />} />
 
-      <Route path={paths.adminBaseInstanceUrl}>
-        <AdminInstancesPage />
-      </Route>
-      <Route path={paths.adminInstanceUrl}>
-        <AdminInstanceRoutes />
-      </Route>
+      <Route path="instance" element={<AdminInstancesPage />} />
+      <Route
+        path={`instance/:instanceId/*`}
+        element={<AdminInstanceRoutes />}
+      />
     </Routes>
   );
 };
@@ -76,27 +55,13 @@ const AdminRoutes = () => {
 const AdminInstanceRoutes = () => {
   return (
     <Routes>
-      <Route path={paths.adminInstanceUrl}>
-        <Navigate to={paths.adminPersonsUrl} replace />
-      </Route>
-      <Route path={paths.adminPersonsUrl}>
-        <PersonsPage />
-      </Route>
-      <Route path={paths.adminProductCategoriesUrl}>
-        <ProductCategoriesPage />
-      </Route>
-      <Route path={paths.adminProductsUrl}>
-        <ProductsPage />
-      </Route>
-      <Route path={paths.adminPaymentsUrl}>
-        <PaymentsPage />
-      </Route>
-      <Route path={paths.adminPurchasesUrl}>
-        <PurchasesPage />
-      </Route>
-      <Route path={paths.adminSettingsUrl}>
-        <SettingsPage />
-      </Route>
+      <Route path="/" element={<Navigate to="persons" replace />} />
+      <Route path="persons" element={<PersonsPage />} />
+      <Route path="product-categories" element={<ProductCategoriesPage />} />
+      <Route path="products" element={<ProductsPage />} />
+      <Route path="payments" element={<PaymentsPage />} />
+      <Route path="purchases" element={<PurchasesPage />} />
+      <Route path="settings" element={<SettingsPage />} />
     </Routes>
   );
 };
