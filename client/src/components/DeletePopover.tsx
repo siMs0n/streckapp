@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   Button,
   ButtonGroup,
@@ -14,13 +14,10 @@ import {
 type DeletePopoverProps = {
   name: string;
   onDelete: () => any;
+  children: ReactNode;
 };
 
-const DeletePopover: React.FC<DeletePopoverProps> = ({
-  name,
-  onDelete,
-  children,
-}) => {
+const DeletePopover = ({ name, onDelete, children }: DeletePopoverProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Popover isOpen={isOpen} onOpen={onOpen} onClose={onClose}>
@@ -30,7 +27,7 @@ const DeletePopover: React.FC<DeletePopoverProps> = ({
         <PopoverBody>Är du säker på att du vill ta bort "{name}"?</PopoverBody>
         <PopoverFooter
           border="0"
-          d="flex"
+          display="flex"
           alignItems="center"
           justifyContent="flex-end"
           pb={4}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { pinUrl } from '../routes/paths';
 import useCurrentInstance from './useCurrentInstance';
 
@@ -7,7 +7,7 @@ import useCurrentInstance from './useCurrentInstance';
 export default function usePinAuth() {
   const [authorized, setAuthorized] = useState(false);
   const { instance, isLoading, isFetched } = useCurrentInstance();
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     if (isFetched && instance) {
       const localPin = localStorage.getItem(`${instance?._id}/pin`);
@@ -16,10 +16,10 @@ export default function usePinAuth() {
         setAuthorized(true);
       } else {
         setAuthorized(false);
-        history.push(pinUrl);
+        navigate(pinUrl);
       }
     }
-  }, [instance, isFetched, history]);
+  }, [instance, isFetched, navigate]);
 
   return { authorized, isLoading };
 }

@@ -11,7 +11,7 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { adminLogin } from '../api/api-methods';
 import useAdminAuth from '../hooks/useAdminAuth';
@@ -22,35 +22,21 @@ export default function LoginPage() {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<{ username: string; password: string }>();
   const loginMutation = useMutation(adminLogin, {
     onSuccess: (data) => {
       localStorage.setItem('token', data.access_token);
-      history.push('/admin');
+      navigate('/admin');
     },
   });
-  const history = useHistory();
+  const navigate = useNavigate();
   const adminAuth = useAdminAuth();
 
   useEffect(() => {
     if (!adminAuth.isLoading && adminAuth.authorized) {
-      history.push(adminBaseInstanceUrl);
+      navigate(adminBaseInstanceUrl);
     }
-  }, [adminAuth, history]);
-
-  function validateUserName(value: string) {
-    if (!value) {
-      return 'Du måste ange ett användarnamn';
-    } else return true;
-  }
-
-  function validatePassword(value: string) {
-    if (!value) {
-      return 'Du måste ange ett lösenord';
-    } else if (value.length < 4) {
-      return 'Lösenordet måste vara minst 4 tecken långt';
-    } else return true;
-  }
+  }, [adminAuth, navigate]);
 
   function onSubmit(values: { username: string; password: string }) {
     return loginMutation.mutate(values);
@@ -64,25 +50,34 @@ export default function LoginPage() {
         </Heading>
         <Box mt={8}>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isInvalid={errors.username}>
+            <FormControl isInvalid={Boolean(errors.username)}>
               <FormLabel htmlFor="username">Användarnamn</FormLabel>
               <Input
                 placeholder="Användarnamn"
-                {...register('username', { validate: validateUserName })}
+                {...register('username', {
+                  required: 'Du måste ange ett användarnamn',
+                })}
               />
+
               <FormErrorMessage>
-                {errors.username && errors.username.message}
+                {errors.username?.message?.toString()}
               </FormErrorMessage>
             </FormControl>
-            <FormControl isInvalid={errors.password} mt={4}>
+            <FormControl isInvalid={Boolean(errors.password)} mt={4}>
               <FormLabel htmlFor="password">Lösenord</FormLabel>
               <Input
                 type="password"
                 placeholder="********"
-                {...register('password', { validate: validatePassword })}
+                {...register('password', {
+                  required: 'Du måste ange ett lösenord',
+                  minLength: {
+                    value: 4,
+                    message: 'Lösenordet måste vara minst 4 tecken långt',
+                  },
+                })}
               />
               <FormErrorMessage>
-                {errors.password && errors.password.message}
+                {errors.password?.message?.toString()}
               </FormErrorMessage>
             </FormControl>
             <Button

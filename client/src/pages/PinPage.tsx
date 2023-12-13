@@ -8,19 +8,19 @@ import {
   PinInputField,
   Text,
 } from '@chakra-ui/react';
-import { useHistory, Link as RouterLink } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { loginUrl, getHomeUrl } from '../routes/paths';
 import useCurrentInstance from '../hooks/useCurrentInstance';
 import { useState } from 'react';
 
 export default function PinPage() {
   const { instance } = useCurrentInstance();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const onChangePin = (pin: string) => {
     if (pin && pin === instance?.pin) {
       localStorage.setItem(`${instance._id}/pin`, pin);
-      history.push(getHomeUrl(instance._id));
+      navigate(getHomeUrl(instance._id));
     } else if (pin.length === 4) {
       setTimeout(() => {
         setShowErrorMessage(true);

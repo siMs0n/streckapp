@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import {
   Flex,
   IconButton,
@@ -96,7 +96,9 @@ const PaginatedTable = <T extends object>({
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <Th {...column.getHeaderProps()}>{column.render('Header')}</Th>
+                <Th {...column.getHeaderProps()}>
+                  {column.render('Header') as ReactNode}
+                </Th>
               ))}
             </Tr>
           ))}
@@ -108,7 +110,9 @@ const PaginatedTable = <T extends object>({
               <Tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <Td {...cell.getCellProps()}>{cell.render('Cell')}</Td>
+                    <Td {...cell.getCellProps()}>
+                      {cell.render('Cell') as ReactNode}
+                    </Td>
                   );
                 })}
               </Tr>

@@ -11,14 +11,7 @@ const defaultValues = {
   pin: null,
 };
 
-export interface InstanceFormInputs {
-  name: string;
-  year: number;
-  swishPhoneNumber: string;
-  pin: string | null;
-}
-
-const schema: yup.SchemaOf<InstanceFormInputs> = yup
+const schema = yup
   .object()
   .shape({
     name: yup
@@ -45,6 +38,8 @@ const schema: yup.SchemaOf<InstanceFormInputs> = yup
       .matches(/^([0-9])+$/, 'Pinkoden måste vara exakt 4 siffror'),
   })
   .defined();
+
+export type InstanceFormInputs = yup.InferType<typeof schema>;
 
 export default function CreateEditInstance({
   instance,

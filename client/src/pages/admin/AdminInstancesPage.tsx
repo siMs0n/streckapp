@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { addInstance } from '../../api/admin-api-methods';
 import { getInstances } from '../../api/api-methods';
 import CreateEditInstance, {
@@ -18,7 +18,7 @@ import { getAdminInstanceUrl } from '../../routes/paths';
 
 export default function AdminInstancesPage() {
   const { data: instances } = useQuery('instances', getInstances);
-  const history = useHistory();
+  const navigate = useNavigate();
   const toast = useToast();
 
   const queryClient = useQueryClient();
@@ -48,7 +48,7 @@ export default function AdminInstancesPage() {
   };
 
   const onSelectInstance = (id: string) => {
-    history.push(getAdminInstanceUrl(id));
+    navigate(getAdminInstanceUrl(id));
   };
 
   return (

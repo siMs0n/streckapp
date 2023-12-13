@@ -16,12 +16,12 @@ import CreateEditInstance, {
 } from '../../components/CreateEditInstance';
 import DeletePopover from '../../components/DeletePopover';
 import useCurrentInstance from '../../hooks/useCurrentInstance';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { adminBaseInstanceUrl } from '../../routes/paths';
 
 export default function SettingsPage() {
   const { instance } = useCurrentInstance();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const toast = useToast();
 
@@ -56,7 +56,7 @@ export default function SettingsPage() {
   const onDeleteInstance = async () => {
     if (!instance) return;
     await deleteInstance(instance._id);
-    history.push(adminBaseInstanceUrl);
+    navigate(adminBaseInstanceUrl);
   };
 
   if (!instance) {

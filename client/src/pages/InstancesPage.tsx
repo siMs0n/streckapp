@@ -1,6 +1,6 @@
 import { Box, Container, Heading, VStack, Text, Link } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { getInstances } from '../api/api-methods';
 import { getInstanceUrl, getPinUrl, loginUrl } from '../routes/paths';
 import { Instance } from '../types';
@@ -12,14 +12,14 @@ export default function InstancesPage() {
     retry: false,
   });
   const showSpinner = useShowSpinner(!!instances);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onSelectInstance = (instance: Instance) => {
     const localPin = localStorage.getItem(`${instance._id}/pin`);
     if (instance.pin && localPin !== instance.pin) {
-      history.push(getPinUrl(instance._id));
+      navigate(getPinUrl(instance._id));
     } else {
-      history.push(getInstanceUrl(instance._id));
+      navigate(getInstanceUrl(instance._id));
     }
   };
 

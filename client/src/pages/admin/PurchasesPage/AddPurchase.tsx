@@ -177,7 +177,7 @@ const AddPurchase = ({
           </Box>
           <Box>
             <HStack mb={1}>
-              <Text m1={2}>Pris</Text>
+              <Text ml={2}>Pris</Text>
               <Tooltip label="Om du ändrar priset kommer priset på produkten ändras även efteråt">
                 <InfoIcon />
               </Tooltip>

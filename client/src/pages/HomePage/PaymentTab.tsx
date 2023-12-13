@@ -151,7 +151,7 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
                 mt={4}
                 colorScheme="purple"
                 onClick={onConfirmPaymentOpen}
-                loading={paymentMutation.isLoading}
+                isLoading={paymentMutation.isLoading}
                 loadingText="Laddar"
               >
                 Bekräfta
@@ -162,7 +162,7 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
               <PopoverBody>Har du swishat?</PopoverBody>
               <PopoverFooter
                 border="0"
-                d="flex"
+                display="flex"
                 alignItems="center"
                 justifyContent="center"
                 pb={4}

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from '../pages/HomePage/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -17,64 +16,87 @@ import ProductCategoriesPage from '../pages/admin/ProductCategoriesPage';
 
 export default function AppRoutes() {
   return (
-    <Switch>
-      <Route exact path={paths.baseUrl} component={InstancesPage} />
-      <Route exact path={paths.baseInstanceUrl} component={InstancesPage} />
-      <Route path={paths.instanceUrl} component={InstanceRoutes} />
-      <Route exact path={paths.loginUrl} component={LoginPage} />
-      <Route path={paths.adminBaseUrl} component={AdminRoutes} />
-      <Route component={NotFoundPage} />
-    </Switch>
+    <Routes>
+      <Route path={paths.baseUrl}>
+        <InstancesPage />
+      </Route>
+      <Route path={paths.baseInstanceUrl}>
+        <InstancesPage />
+      </Route>
+      <Route path={paths.instanceUrl}>
+        <InstanceRoutes />
+      </Route>
+      <Route path={paths.loginUrl}>
+        <LoginPage />
+      </Route>
+      <Route path={paths.adminBaseUrl}>
+        <AdminRoutes />
+      </Route>
+      <Route path="*">
+        <NotFoundPage />
+      </Route>
+    </Routes>
   );
 }
 
 const InstanceRoutes = () => {
   return (
-    <Switch>
-      <Redirect exact path={paths.instanceUrl} to={paths.homeUrl} />
-      <Route exact path={paths.homeUrl} component={HomePage} />
-      <Route exact path={paths.pinUrl} component={PinPage} />
-    </Switch>
+    <Routes>
+      <Route path={paths.instanceUrl}>
+        <Navigate to={paths.homeUrl} replace />
+      </Route>
+      <Route path={paths.homeUrl}>
+        <HomePage />
+      </Route>
+      <Route path={paths.pinUrl}>
+        <PinPage />
+      </Route>
+    </Routes>
   );
 };
 
 const AdminRoutes = () => {
   useAdminAuth();
   return (
-    <Switch>
-      <Redirect
-        exact
-        path={paths.adminBaseUrl}
-        to={paths.adminBaseInstanceUrl}
-      />
-      <Route
-        exact
-        path={paths.adminBaseInstanceUrl}
-        component={AdminInstancesPage}
-      />
-      <Route path={paths.adminInstanceUrl} component={AdminInstanceRoutes} />
-    </Switch>
+    <Routes>
+      <Route path={paths.adminBaseUrl}>
+        <Navigate to={paths.adminBaseInstanceUrl} replace />
+      </Route>
+
+      <Route path={paths.adminBaseInstanceUrl}>
+        <AdminInstancesPage />
+      </Route>
+      <Route path={paths.adminInstanceUrl}>
+        <AdminInstanceRoutes />
+      </Route>
+    </Routes>
   );
 };
 
 const AdminInstanceRoutes = () => {
   return (
-    <Switch>
-      <Redirect
-        exact
-        path={paths.adminInstanceUrl}
-        to={paths.adminPersonsUrl}
-      />
-      <Route exact path={paths.adminPersonsUrl} component={PersonsPage} />
-      <Route
-        exact
-        path={paths.adminProductCategoriesUrl}
-        component={ProductCategoriesPage}
-      />
-      <Route exact path={paths.adminProductsUrl} component={ProductsPage} />
-      <Route exact path={paths.adminPaymentsUrl} component={PaymentsPage} />
-      <Route exact path={paths.adminPurchasesUrl} component={PurchasesPage} />
-      <Route exact path={paths.adminSettingsUrl} component={SettingsPage} />
-    </Switch>
+    <Routes>
+      <Route path={paths.adminInstanceUrl}>
+        <Navigate to={paths.adminPersonsUrl} replace />
+      </Route>
+      <Route path={paths.adminPersonsUrl}>
+        <PersonsPage />
+      </Route>
+      <Route path={paths.adminProductCategoriesUrl}>
+        <ProductCategoriesPage />
+      </Route>
+      <Route path={paths.adminProductsUrl}>
+        <ProductsPage />
+      </Route>
+      <Route path={paths.adminPaymentsUrl}>
+        <PaymentsPage />
+      </Route>
+      <Route path={paths.adminPurchasesUrl}>
+        <PurchasesPage />
+      </Route>
+      <Route path={paths.adminSettingsUrl}>
+        <SettingsPage />
+      </Route>
+    </Routes>
   );
 };

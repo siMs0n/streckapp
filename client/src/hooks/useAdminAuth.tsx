@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { loginUrl } from '../routes/paths';
 import { isAdmin } from '../api/admin-api-methods';
 import { AxiosError } from 'axios';
@@ -11,21 +11,21 @@ export default function useAdminAuth() {
     retry: false,
     onError: (error) => {
       if (isAxiosError(error) && error?.response?.status === 401) {
-        history.push(loginUrl);
+        navigate(loginUrl);
       }
     },
   });
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     if (isFetched) {
       if (data) {
         setAuthorized(true);
       } else {
         setAuthorized(false);
-        history.push(loginUrl);
+        navigate(loginUrl);
       }
     }
-  }, [data, isFetched, history]);
+  }, [data, isFetched, navigate]);
 
   return { authorized, isLoading };
 }

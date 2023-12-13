@@ -20,7 +20,7 @@ export default function AdminMenu() {
   const instanceIdString = instanceId ?? '';
   const location = useLocation();
   const matchPage = (path: string) => {
-    return Boolean(matchPath(location.pathname, { path, exact: true }));
+    return Boolean(matchPath({ path, end: true }, location.pathname));
   };
   return (
     <Stack
