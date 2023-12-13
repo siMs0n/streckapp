@@ -1,11 +1,12 @@
 import { connect } from '../../model/mongoose';
 import type { Handler, HandlerEvent } from '@netlify/functions';
-import { Product } from '../../model/models';
+import { productModelName } from '../../model/models';
 
 export const handler: Handler = async (event) => {
   try {
-    await connect();
+    const mongoose = await connect();
 
+    const Product = mongoose.model(productModelName);
     const results = await Product.find({}).populate('category').exec();
 
     return {

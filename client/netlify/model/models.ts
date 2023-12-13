@@ -1,41 +1,38 @@
 import mongoose from 'mongoose';
 
-interface IInstance {
+export interface IInstance {
   name: string;
   year: number;
   pin: string;
   swishPhoneNumber: string;
 }
 
-const instanceSchema = new mongoose.Schema<IInstance>({
+export const instanceSchema = new mongoose.Schema<IInstance>({
   name: { type: String, required: true },
   year: { type: Number, required: true },
   pin: { type: String },
   swishPhoneNumber: { type: String },
 });
 
-const Instance = mongoose.model<IInstance>('Instance', instanceSchema);
+export const instanceModelName = 'Instance';
 
-interface IProductCategory {
+export interface IProductCategory {
   name: string;
   instance: mongoose.Types.ObjectId;
 }
 
-const productCategorySchema = new mongoose.Schema<IProductCategory>({
+export const productCategorySchema = new mongoose.Schema<IProductCategory>({
   name: { type: String, required: true },
   instance: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Instance.name,
+    ref: instanceModelName,
     index: true,
   },
 });
 
-const ProductCategory = mongoose.model<IProductCategory>(
-  'ProductCategory',
-  productCategorySchema,
-);
+export const productCategoryModelName = 'ProductCategory';
 
-interface IProduct {
+export interface IProduct {
   name: string;
   price: number;
   available: boolean;
@@ -43,19 +40,19 @@ interface IProduct {
   instance: mongoose.Types.ObjectId;
 }
 
-const productSchema = new mongoose.Schema<IProduct>({
+export const productSchema = new mongoose.Schema<IProduct>({
   name: { type: String, required: true },
   price: { type: Number, required: true },
   available: { type: Boolean, required: true },
   category: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: ProductCategory.name,
+    ref: productCategoryModelName,
   },
   instance: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: Instance.name,
+    ref: instanceModelName,
     index: true,
   },
 });
 
-export const Product = mongoose.model<IProduct>('Product', productSchema);
+export const productModelName = 'Product';
