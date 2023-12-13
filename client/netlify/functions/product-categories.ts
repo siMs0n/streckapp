@@ -1,12 +1,16 @@
-import { connect } from '../../model/mongoose';
+import { MongoClient } from 'mongodb';
 import type { Handler, HandlerEvent } from '@netlify/functions';
-import { Product } from 'client/netlify/model/models';
+
+const mongoClient = new MongoClient(process.env.MONGODB_URI as string);
+
+const clientPromise = mongoClient.connect();
 
 export const handler: Handler = async (event) => {
   try {
-    await connect();
+    const database = (await clientPromise).db('streckapp');
+    const productCategories = database.collection('productcategories');
 
-    const results = await Product.find({}).populate('category').exec();
+    const results = await productCategories.find({}).toArray();
 
     return {
       statusCode: 200,
