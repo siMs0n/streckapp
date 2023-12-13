@@ -1,6 +1,6 @@
 [build]
-  base = "/"
-  publish = "client/dist"
+  base = "client"
+  publish = "dist"
   command = "yarn build"
 
 [functions]
