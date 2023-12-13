@@ -2,24 +2,20 @@ import { connect } from '../../model/mongoose';
 import mongoose from 'mongoose';
 import { instanceModelName } from './instance.model';
 
-export const getInstances = async (instance?: string) => {
+export const getInstances = async () => {
   await connect();
 
-  const Product = mongoose.model(instanceModelName);
-  const results = await Product.find(instance ? { instance } : {})
-    .populate('category')
-    .exec();
+  const Instance = mongoose.model(instanceModelName);
+  const results = await Instance.find({}).exec();
   return results;
 };
 
-export const getInstanceById = async (id: string, instance?: string) => {
+export const getInstanceById = async (id: string) => {
   await connect();
 
-  const Product = mongoose.model(instanceModelName);
-  const results = await Product.findOne(
-    instance ? { instance, _id: id } : { _id: new mongoose.Types.ObjectId(id) },
-  )
-    .populate('category')
-    .exec();
+  const Instance = mongoose.model(instanceModelName);
+  const results = await Instance.findOne({
+    _id: new mongoose.Types.ObjectId(id),
+  }).exec();
   return results;
 };

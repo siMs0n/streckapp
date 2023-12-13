@@ -3,12 +3,11 @@ import { getIdFromPath, getCorsHeaders } from '../../utils';
 import { getInstances, getInstanceById } from './instances.service';
 
 export const handler: Handler = async (event) => {
-  const instance = event?.queryStringParameters?.instance;
   const instanceId = getIdFromPath(event.path, 'instances');
   try {
     const results = instanceId
-      ? await getInstanceById(instanceId, instance)
-      : await getInstances(instance);
+      ? await getInstanceById(instanceId)
+      : await getInstances();
 
     return {
       statusCode: 200,
