@@ -5,6 +5,12 @@ import { makePurchase } from './purchases.service';
 import { parseCreatePurchaseDto } from './create-purchase';
 
 export const handler: Handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: getCorsHeaders(event),
+    };
+  }
   try {
     const createPurchaseDto = parseCreatePurchaseDto(event.body);
     const results = await makePurchase(createPurchaseDto);
