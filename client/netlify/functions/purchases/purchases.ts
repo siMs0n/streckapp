@@ -10,7 +10,7 @@ export const handler: Handler = async (event) => {
     const results = await makePurchase(createPurchaseDto);
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       body: JSON.stringify(results),
       headers: getCorsHeaders(event),
     };
