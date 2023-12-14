@@ -36,6 +36,7 @@ interface PaymentTabProps {
 
 const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
   const [showPaymentSuccess, setShowPaymentSuccess] = useState(false);
+  const [showAmountError, setShowAmountError] = useState(false);
   const [swishPayment, setSwishPayment] = useState<SwishPayment>();
   const previousPersonId = usePrevious(selectedPerson?._id);
   const {
@@ -69,30 +70,36 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const amount = parseInt((event.target as HTMLInputElement).value);
-    if (amount) {
-      const reference = makeID();
-      const swishData = {
-        version: 1,
-        payee: {
-          value: instance?.swishPhoneNumber,
-        },
-        message: {
-          value: 'Plussa: ' + reference,
-        },
-        amount: {
-          value: amount,
-        },
-      };
-      setSwishPayment({
-        amount,
-        reference,
-        swishLink:
-          'swish://payment?data=' +
-          encodeURIComponent(JSON.stringify(swishData)),
-      });
-    } else {
+    if (!amount) {
       setSwishPayment(undefined);
+      setShowAmountError(false);
+      return;
     }
+    if (amount > 1000) {
+      setSwishPayment(undefined);
+      setShowAmountError(true);
+      return;
+    }
+    const reference = makeID();
+    const swishData = {
+      version: 1,
+      payee: {
+        value: instance?.swishPhoneNumber,
+      },
+      message: {
+        value: 'Plussa: ' + reference,
+      },
+      amount: {
+        value: amount,
+      },
+    };
+    setSwishPayment({
+      amount,
+      reference,
+      swishLink:
+        'swish://payment?data=' + encodeURIComponent(JSON.stringify(swishData)),
+    });
+    setShowAmountError(false);
   };
 
   const onConfirmPayment = () => {
@@ -133,6 +140,11 @@ const PaymentTab = ({ selectedPerson }: PaymentTabProps) => {
           onChange={onChangePaymentAmount}
           type="number"
         />
+        {showAmountError ? (
+          <Text fontSize="sm" color="gray.400" mt={1}>
+            1000kr är det största beloppet du kan plussa åt gången.
+          </Text>
+        ) : null}
       </Box>
       {swishPayment && (
         <MotionBox
