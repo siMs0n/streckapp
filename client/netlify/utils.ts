@@ -18,5 +18,6 @@ export const getCorsHeaders = (event: HandlerEvent) => {
     'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
       ? origin
       : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
   };
 };
