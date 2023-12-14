@@ -29,7 +29,7 @@ export default function HomePage() {
   );
   const [tabIndex, setTabIndex] = useState(0);
 
-  const { persons } = usePersons();
+  const { persons, personsLoading } = usePersons();
 
   const showSpinner = useShowSpinner(!!persons);
 
@@ -47,7 +47,7 @@ export default function HomePage() {
     return <FetchingDataSpinner />;
   }
 
-  if (!selectedPerson) {
+  if (!selectedPerson && !personsLoading) {
     return (
       <SelectPerson
         persons={persons || []}

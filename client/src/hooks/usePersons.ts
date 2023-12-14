@@ -14,7 +14,7 @@ export default function usePersons() {
   const { instance } = useCurrentInstance();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ['persons', instance?._id],
     () => getPersons(instance?._id),
     {
@@ -69,6 +69,7 @@ export default function usePersons() {
 
   return {
     persons: data,
+    personsLoading: isLoading,
     addPerson: handleAddPerson,
     updatePerson: handleUpdatePerson,
     deletePerson: handleDeletePerson,
