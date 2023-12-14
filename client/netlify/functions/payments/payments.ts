@@ -5,6 +5,12 @@ import { makePayment } from './payments.service';
 import { parseCreatePaymentDto } from './create-payment.dto';
 
 export const handler: Handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: getCorsHeaders(event),
+    };
+  }
   try {
     const createPaymentDto = parseCreatePaymentDto(event.body);
     const results = await makePayment(createPaymentDto);
