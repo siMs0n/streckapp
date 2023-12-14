@@ -1,6 +1,7 @@
 import type { Handler } from '@netlify/functions';
 import { getIdFromPath, getCorsHeaders } from '../../utils';
 import { getInstances, getInstanceById } from './instances.service';
+import { NotFoundError } from '../../errors';
 
 export const handler: Handler = async (event) => {
   const instanceId = getIdFromPath(event.path, 'instances');
@@ -15,6 +16,10 @@ export const handler: Handler = async (event) => {
       headers: getCorsHeaders(event),
     };
   } catch (error) {
+    let statusCode = 500;
+    if (error instanceof NotFoundError) {
+      statusCode = 404;
+    }
     return {
       statusCode: 500,
       body: error.toString(),

@@ -1,6 +1,7 @@
 import { connect } from '../../model/mongoose';
 import mongoose from 'mongoose';
 import { instanceModelName } from './instance.model';
+import { NotFoundError } from '../..//errors';
 
 export const getInstances = async () => {
   await connect();
@@ -13,9 +14,13 @@ export const getInstances = async () => {
 export const getInstanceById = async (id: string) => {
   await connect();
 
-  const Instance = mongoose.model(instanceModelName);
-  const results = await Instance.findOne({
-    _id: new mongoose.Types.ObjectId(id),
-  }).exec();
-  return results;
+  try {
+    const Instance = mongoose.model(instanceModelName);
+    const results = await Instance.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+    }).exec();
+    return results;
+  } catch (error) {
+    throw new NotFoundError('Could not find instance.');
+  }
 };
