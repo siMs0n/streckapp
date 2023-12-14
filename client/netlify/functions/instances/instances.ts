@@ -21,7 +21,7 @@ export const handler: Handler = async (event) => {
       statusCode = 404;
     }
     return {
-      statusCode: 500,
+      statusCode,
       body: error.toString(),
       headers: getCorsHeaders(event),
     };

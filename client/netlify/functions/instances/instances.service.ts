@@ -1,7 +1,7 @@
 import { connect } from '../../model/mongoose';
 import mongoose from 'mongoose';
 import { instanceModelName } from './instance.model';
-import { NotFoundError } from '../..//errors';
+import { NotFoundError } from '../../errors';
 
 export const getInstances = async () => {
   await connect();
