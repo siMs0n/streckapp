@@ -19,7 +19,7 @@ export const makePurchase = async (createPurchaseDto: CreatePurchaseDto) => {
   };
   const createdPurchase = new Purchase(createPopulatedPurchaseDto).save();
 
-  const newBalance = person.balance + createPopulatedPurchaseDto.amount;
+  const newBalance = person.balance - createPopulatedPurchaseDto.amount;
   await updatePersonById(createPurchaseDto.person, { balance: newBalance });
 
   return createdPurchase;
