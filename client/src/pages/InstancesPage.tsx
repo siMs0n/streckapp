@@ -23,7 +23,7 @@ export default function InstancesPage() {
     }
   };
 
-  //Show spinner if server is cold starting and takes extra long to load
+  //Show spinner if serverless functions are cold starting and take extra long to load
   if (showSpinner) {
     return <FetchingDataSpinner />;
   }

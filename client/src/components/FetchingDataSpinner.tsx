@@ -12,16 +12,6 @@ export const FetchingDataSpinner = () => (
       >
         <Text>Detta kan ta upp emot 30 sekunder</Text>
       </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 10 }}
-      >
-        <Text>
-          Det hade gått snabbare om spexet betalade för den här tjänsten
-          &#128517;
-        </Text>
-      </motion.div>
       <Spinner mt={8} size="xl" />
     </Flex>
   </Container>
