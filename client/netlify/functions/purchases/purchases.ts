@@ -1,8 +1,8 @@
 import type { Handler } from '@netlify/functions';
-import { getCorsHeaders } from '../../utils';
+import { getCorsHeaders, parseDto } from '../../utils';
 import { ValidationError } from '../../errors';
 import { makePurchase } from './purchases.service';
-import { parseCreatePurchaseDto } from './create-purchase';
+import { CreatePurchaseSchema } from './create-purchase';
 
 export const handler: Handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -12,7 +12,7 @@ export const handler: Handler = async (event) => {
     };
   }
   try {
-    const createPurchaseDto = parseCreatePurchaseDto(event.body);
+    const createPurchaseDto = parseDto(event.body, CreatePurchaseSchema);
     const results = await makePurchase(createPurchaseDto);
 
     return {
