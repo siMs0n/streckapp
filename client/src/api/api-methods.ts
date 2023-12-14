@@ -10,7 +10,7 @@ import {
 } from '../types';
 
 const httpClient = axios.create({
-  baseURL: 'https://streckapp.onrender.com',
+  baseURL: 'https://strecklista.netlify.app/.netlify/functions',
 });
 
 export const getProducts = async (instanceId?: string): Promise<Product[]> => {
