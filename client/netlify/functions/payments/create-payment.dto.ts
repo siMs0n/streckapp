@@ -1,3 +1,4 @@
+import { ValidationError } from '../../errors';
 import { z } from 'zod';
 
 export const CreatePaymentSchema = z.object({
@@ -11,3 +12,11 @@ export const CreatePaymentSchema = z.object({
 });
 
 export type CreatePaymentDto = z.infer<typeof CreatePaymentSchema>;
+
+export const parseCreatePaymentDto = (input: unknown) => {
+  const result = CreatePaymentSchema.safeParse(input);
+
+  if (result.success === false) throw new ValidationError(result.error.message);
+
+  return result.data;
+};

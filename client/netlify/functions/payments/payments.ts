@@ -1,12 +1,12 @@
 import type { Handler } from '@netlify/functions';
 import { getCorsHeaders } from '../../utils';
+import { ValidationError } from '../../errors';
 import { makePayment } from './payments.service';
-import { CreatePaymentSchema } from './create-payment.dto';
-import { ZodError } from 'zod';
+import { parseCreatePaymentDto } from './create-payment.dto';
 
 export const handler: Handler = async (event) => {
   try {
-    const createPaymentDto = CreatePaymentSchema.parse(event.body);
+    const createPaymentDto = parseCreatePaymentDto(event.body);
     const results = await makePayment(createPaymentDto);
 
     return {
@@ -16,14 +16,12 @@ export const handler: Handler = async (event) => {
     };
   } catch (error) {
     let statusCode = 500;
-    let body = error.toString();
-    if (error instanceof ZodError) {
+    if (error instanceof ValidationError) {
       statusCode = 400;
-      body = error.issues;
     }
     return {
       statusCode: 500,
-      body,
+      body: error.toString(),
       headers: getCorsHeaders(event),
     };
   }
