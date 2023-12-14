@@ -6,6 +6,9 @@ import { getInstanceUrl, getPinUrl, loginUrl } from '../routes/paths';
 import { Instance } from '../types';
 import { useShowSpinner } from '../hooks/useShowSpinner';
 import { FetchingDataSpinner } from '../components/FetchingDataSpinner';
+import { useEffect } from 'react';
+
+export const chosenInstanceKey = 'chosen_instance';
 
 export default function InstancesPage() {
   const { data: instances } = useQuery('instances', getInstances, {
@@ -14,7 +17,15 @@ export default function InstancesPage() {
   const showSpinner = useShowSpinner(!!instances);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const chosenInstance = localStorage.getItem(chosenInstanceKey);
+    if (chosenInstance) {
+      navigate(getInstanceUrl(chosenInstance));
+    }
+  }, []);
+
   const onSelectInstance = (instance: Instance) => {
+    localStorage.setItem(chosenInstanceKey, instance._id);
     const localPin = localStorage.getItem(`${instance._id}/pin`);
     if (instance.pin && localPin !== instance.pin) {
       navigate(getPinUrl(instance._id));

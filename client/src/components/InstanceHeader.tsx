@@ -3,6 +3,7 @@ import { Heading, Link, HStack } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { baseInstanceUrl } from '../routes/paths';
 import useCurrentInstance from '../hooks/useCurrentInstance';
+import { chosenInstanceKey } from '../pages/InstancesPage';
 
 export default function InstanceHeader() {
   const { instance } = useCurrentInstance();
@@ -27,7 +28,12 @@ export default function InstanceHeader() {
       >
         {instance?.name}
       </Heading>
-      <Link as={RouterLink} to={baseInstanceUrl} fontSize="small">
+      <Link
+        as={RouterLink}
+        to={baseInstanceUrl}
+        fontSize="small"
+        onClick={() => localStorage.removeItem(chosenInstanceKey)}
+      >
         Byt spex
       </Link>
     </HStack>
