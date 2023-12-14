@@ -1,6 +1,6 @@
 import { connect } from '../../model/mongoose';
 import mongoose from 'mongoose';
-import { personModelName } from './person.model';
+import { personModelName, IPerson } from './person.model';
 import { UpdatePersonDto } from './update-person.dto';
 import { NotFoundError } from '../../errors';
 
@@ -15,13 +15,15 @@ export const getPersons = async (instance?: string) => {
 export const getPersonById = async (id: string, instance?: string) => {
   await connect();
 
-  const Person = mongoose.model(personModelName);
+  const Person = mongoose.model<IPerson>(personModelName);
   try {
     const results = await Person.findOne(
       instance
         ? { instance, _id: id }
         : { _id: new mongoose.Types.ObjectId(id) },
-    ).exec();
+    )
+      .orFail()
+      .exec();
     return results;
   } catch (error) {
     throw new NotFoundError('Could not find person.');

@@ -22,7 +22,9 @@ export const getProductCategoryById = async (id: string, instance?: string) => {
       instance
         ? { instance, _id: id }
         : { _id: new mongoose.Types.ObjectId(id) },
-    ).exec();
+    )
+      .orFail()
+      .exec();
     return results;
   } catch (error) {
     throw new NotFoundError('Could not find product category.');

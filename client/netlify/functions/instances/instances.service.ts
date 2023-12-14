@@ -18,7 +18,9 @@ export const getInstanceById = async (id: string) => {
     const Instance = mongoose.model(instanceModelName);
     const results = await Instance.findOne({
       _id: new mongoose.Types.ObjectId(id),
-    }).exec();
+    })
+      .orFail()
+      .exec();
     return results;
   } catch (error) {
     throw new NotFoundError('Could not find instance.');

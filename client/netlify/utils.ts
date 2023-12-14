@@ -9,7 +9,7 @@ export const getIdFromPath = (
 };
 
 export const getCorsHeaders = (event: HandlerEvent) => {
-  const origin = event?.headers?.Origin || event?.headers?.origin;
+  const origin = (event?.headers?.Origin || event?.headers?.origin) ?? '';
   const allowedOrigins = [
     'https://strecklista.netlify.app',
     'http://localhost:3000',
