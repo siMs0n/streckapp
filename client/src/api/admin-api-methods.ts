@@ -13,8 +13,10 @@ import {
   CreateMultiPurchaseDto,
 } from '../types';
 
+const apiBaseUrl = 'https://streckapp.onrender.com';
+
 const authHttpClient = axios.create({
-  baseURL: 'https://streckapp.onrender.com',
+  baseURL: apiBaseUrl,
 });
 
 authHttpClient.interceptors.request.use(
@@ -127,4 +129,27 @@ export const updateInstance = async (instance: Instance) => {
 
 export const deleteInstance = async (instanceId: string) => {
   return authHttpClient.delete(`instances/${instanceId}`);
+};
+
+interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+interface LoginResponse {
+  access_token: string;
+}
+
+export const adminLogin = async (
+  request: LoginRequest,
+): Promise<LoginResponse> => {
+  return axios
+    .post(`${apiBaseUrl}/auth/login`, request)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error.response);
+      if (error.response.status === 401) {
+        throw Error('Användarnamnet och/eller lösenordet stämmer inte');
+      }
+    });
 };

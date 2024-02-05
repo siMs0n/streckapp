@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { adminLogin } from '../api/api-methods';
+import { adminLogin } from '../api/admin-api-methods';
 import useAdminAuth from '../hooks/useAdminAuth';
 import { adminBaseInstanceUrl } from '../routes/paths';
 import { useShowSpinner } from '../hooks/useShowSpinner';
